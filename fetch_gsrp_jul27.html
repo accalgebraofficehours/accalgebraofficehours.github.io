@@ -1,0 +1,38 @@
+<!-- index.html of your “other” site -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Mirror of GSRP</title>
+  <!-- Optional: Include any local CSS/JS wrappers here -->
+</head>
+<body>
+  <div id="gsrp-container">Loading…</div>
+
+  <script>
+    async function loadGSRP() {
+      // this is the url of the app
+      const baseUrl = `http://127.0.0.1:8080`
+
+      // this is the url of the html we're fetching, we want to apply our baseUrl to it
+      const rawUrl = 
+      'http://localhost:8000/ggg.html'
+        // 'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/GSRP.html';
+      const resp = await fetch(rawUrl);
+      if (!resp.ok) {
+        document.getElementById('gsrp-container')
+                .textContent = 'Failed to load GSRP.';
+        return;
+      }
+      let html = await resp.text();
+      html = html.replace("#REPLACE_WITH_BASE_URL#", baseUrl)
+      // Replace the entire document with the fetched content
+      document.open();
+      document.write(html);
+      document.close();
+      
+    }
+    loadGSRP();
+  </script>
+</body>
+</html>
