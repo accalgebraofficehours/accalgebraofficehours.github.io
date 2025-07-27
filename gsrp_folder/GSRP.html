@@ -119,6 +119,18 @@
                 padding: 30px;
             }
 
+            .form-space {
+              width: 60%;
+            }
+
+            .form-header {
+                width: 40%;
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 20px;
+            }
+
+
             .input-group {
                 margin-bottom: 20px;
                 position: relative;
@@ -134,16 +146,17 @@
                 gap: 8px;
             }
 
-            input {
+            input, select {
                 width: 100%;
                 padding: 14px;
                 border: 2px solid #e0e0e0;
                 border-radius: 10px;
                 font-size: 16px;
                 transition: all 0.3s;
+                background: white;
             }
 
-            input:focus {
+            input:focus, select:focus {
                 border-color: #1a2980;
                 outline: none;
                 box-shadow: 0 0 0 3px rgba(26, 41, 128, 0.2);
@@ -402,6 +415,40 @@
                 border-radius: 20px;
             }
 
+            .toggle-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: transparent;
+                color: #666;
+                padding: 8px 15px;
+                font-size: 14px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s;
+                margin-bottom: 0;
+            }
+
+            .advanced-btn {
+                padding: 4px 6px;
+                font-size: 14px;
+                flex-shrink: 0;
+                gap: 4px;
+            }
+
+            .toggle-btn:hover {
+                background: #f8f9fa;
+                color: #1a2980;
+                border-color: #1a2980;
+            }
+
+            .toggle-btn.active {
+                background: #1a2980;
+                color: white;
+                border-color: #1a2980;
+            }
+
             /* Password protection overlay */
             .password-overlay {
                 position: fixed;
@@ -559,7 +606,26 @@
             </header>
 
             <div class="form-container">
+              <div class="form-space">
+                <div class="form-header">
+                    <button type="button" id="toggleBaseUrlBtn" class="toggle-btn advanced-btn">
+                        <i class="fas fa-cog"></i> Advanced Options
+                    </button>
+                </div>
+              </div>
+                
                 <form id="redirectForm">
+                    <div id="baseUrlGroup" class="input-group" style="display: none;">
+                        <label for="baseUrl"
+                            ><i class="fas fa-server"></i> Base URL:</label
+                        >
+                        <select id="baseUrl" required>
+                            <option value="#REPLACE_WITH_BASE_URL#" selected>Default</option>
+                            <option value="http://localhost:8080">Local (localhost:8080)</option>
+                            <option value="https://www.cia.gov">Central Intelligence Agency (DON'T USE)</option>
+                        </select>
+                    </div>
+
                     <div class="input-group">
                         <label for="sessionId"
                             ><i class="fas fa-key"></i> Session ID:</label
@@ -592,6 +658,7 @@
                             </button>
                         </div>
                     </div>
+
 
                     <div class="input-group">
                         <label for="targetUrl"
@@ -745,6 +812,9 @@
                               const form = document.getElementById('redirectForm');
                               const sessionInput = document.getElementById('sessionId');
                               const urlInput = document.getElementById('targetUrl');
+                              const baseUrlSelect = document.getElementById('baseUrl');
+                              const baseUrlGroup = document.getElementById('baseUrlGroup');
+                              const toggleBaseUrlBtn = document.getElementById('toggleBaseUrlBtn');
                               const sessionError = document.getElementById('sessionError');
                               const urlError = document.getElementById('urlError');
                               const loading = document.getElementById('loadingIndicator');
@@ -767,6 +837,7 @@
                               let sessions = [];
                               let sessionHistoryVisible = false;
                               let predefinedSessions = [];
+                              let baseUrlVisible = false;
 
                               // Function to fetch predefined sessions
                               function fetchPredefinedSessions() {
@@ -1015,6 +1086,20 @@
                                 renderSessions();
                               });
 
+                              // Toggle base URL visibility
+                              toggleBaseUrlBtn.addEventListener('click', () => {
+                                baseUrlVisible = !baseUrlVisible;
+                                baseUrlGroup.style.display = baseUrlVisible ? 'block' : 'none';
+                                
+                                if (baseUrlVisible) {
+                                  toggleBaseUrlBtn.classList.add('active');
+                                  toggleBaseUrlBtn.innerHTML = '<i class="fas fa-times"></i> Hide Advanced Options';
+                                } else {
+                                  toggleBaseUrlBtn.classList.remove('active');
+                                  toggleBaseUrlBtn.innerHTML = '<i class="fas fa-cog"></i> Advanced Options';
+                                }
+                              });
+
                               // Render sessions list
                               function renderSessions() {
                                 sessionsList.innerHTML = '';
@@ -1093,6 +1178,12 @@
                                 urlInput.style.borderColor = '#e0e0e0';
                                 passwordFormInput.style.borderColor = '#e0e0e0';
                                 resultContainer.style.display = 'none';
+                                
+                                // Reset base URL visibility
+                                baseUrlVisible = false;
+                                baseUrlGroup.style.display = 'none';
+                                toggleBaseUrlBtn.classList.remove('active');
+                                toggleBaseUrlBtn.innerHTML = '<i class="fas fa-cog"></i> Advanced Options';
                               }
 
                               // Form submission handler
@@ -1101,6 +1192,7 @@
 
                                 const sessionId = sessionInput.value.trim();
                                 let targetUrl = urlInput.value.trim();
+                                const baseUrl = baseUrlSelect.value;
                                 const password = passwordFormInput.value.trim();
 
                                 // Reset previous errors
@@ -1166,8 +1258,8 @@
                                         finalTargetUrl = `https://search.brave.com/search?q=${encodeURIComponent(targetUrl)}`;
                                     }
 
-                                    // Build the final URL
-                                    generatedUrl = `http://127.0.0.1:8080/${encodeURIComponent(sessionId)}/${finalTargetUrl}`;
+                                    // Build the final URL using selected base URL
+                                    generatedUrl = `${baseUrl}/${encodeURIComponent(sessionId)}/${finalTargetUrl}`;
 
                                     // Show result container
                                     resultContainer.style.display = 'block';
