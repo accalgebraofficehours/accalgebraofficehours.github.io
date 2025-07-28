@@ -767,12 +767,7 @@
                               const REQUIRED_PASSWORD = "PoodleTree22!";
 
                               // Check if already unlocked
-                              const isUnlocked = localStorage.getItem('urlGeneratorUnlocked') === 'true';
-
-                              if (isUnlocked) {
-                                passwordOverlay.style.display = 'none';
-                                mainContainer.style.display = 'block';
-                              }
+                              
 
                               // Unlock button handler
                               unlockBtn.addEventListener('click', () => {
@@ -782,7 +777,8 @@
                                   // Correct password
                                   passwordOverlay.style.display = 'none';
                                   mainContainer.style.display = 'block';
-                                  localStorage.setItem('urlGeneratorUnlocked', 'true');
+                                  initFromStorage();
+                                  
                                 } else {
                                   // Incorrect password
                                   passwordError.style.display = 'block';
