@@ -1,0 +1,1364 @@
+<html>
+    <head>
+      <!-- FROM TOP SECTION -->
+               <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Password-Protected URL Generator</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <style>
+            /* ENTIRE ORIGINAL CSS STARTS HERE */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+            body {
+                background: linear-gradient(135deg, #1a2980, #26d0ce);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+            /* rest of your full original 1000 lines of CSS here */
+            /* BLANK OVERLAY CSS INSERTED HERE */
+            #blankOverlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: white;
+                z-index: 2000;
+            }
+            /* ENTIRE ORIGINAL CSS ENDS HERE */
+        </style>
+       <!-- END TOP SECTION -->
+
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Password-Protected URL Generator</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            body {
+                background: linear-gradient(135deg, #1a2980, #26d0ce);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
+
+            .container {
+                width: 100%;
+                max-width: 750px;
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 16px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+                overflow: hidden;
+                backdrop-filter: blur(10px);
+            }
+
+            header {
+                background: linear-gradient(90deg, #1a2980, #26d0ce);
+                color: white;
+                padding: 25px;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            header::before {
+                content: "";
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0) 70%
+                );
+                transform: rotate(30deg);
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                position: relative;
+                z-index: 2;
+            }
+
+            header p {
+                opacity: 0.9;
+                font-size: 0.95rem;
+                position: relative;
+                z-index: 2;
+            }
+
+            .form-container {
+                padding: 30px;
+            }
+
+            .form-space {
+              width: 100%;
+            }
+
+            .form-header {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 20px;
+            }
+
+
+            .input-group {
+                margin-bottom: 20px;
+                position: relative;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 8px;
+                font-weight: 600;
+                color: #333;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            input, select {
+                width: 100%;
+                padding: 14px;
+                border: 2px solid #e0e0e0;
+                border-radius: 10px;
+                font-size: 16px;
+                transition: all 0.3s;
+                background: white;
+            }
+
+            input:focus, select:focus {
+                border-color: #1a2980;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(26, 41, 128, 0.2);
+            }
+
+            .error {
+                color: #e74c3c;
+                font-size: 14px;
+                margin-top: 6px;
+                display: none;
+            }
+
+            .btn-group {
+                display: flex;
+                gap: 15px;
+                margin-top: 15px;
+            }
+
+            button {
+                flex: 1;
+                padding: 15px;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            #submitBtn {
+                background: linear-gradient(90deg, #1a2980, #26d0ce);
+                color: white;
+            }
+
+            #submitBtn:hover {
+                background: linear-gradient(90deg, #121e5a, #1da3a1);
+                transform: translateY(-2px);
+            }
+
+            #resetBtn {
+                background: #f1f1f1;
+                color: #555;
+            }
+
+            #resetBtn:hover {
+                background: #e0e0e0;
+            }
+
+            .loading {
+                display: none;
+                text-align: center;
+                padding: 15px;
+            }
+
+            .spinner {
+                border: 4px solid rgba(0, 0, 0, 0.1);
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                border-left-color: #1a2980;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 15px;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .info-box {
+                display: none;
+            }
+
+            footer {
+                text-align: center;
+                padding: 20px;
+                color: #777;
+                font-size: 14px;
+                border-top: 1px solid #eee;
+            }
+
+            /* Generated URL section */
+            .result-container {
+                margin-top: 30px;
+                padding: 25px;
+                background: #f8f9fa;
+                border-radius: 12px;
+                display: none;
+                animation: fadeIn 0.5s ease;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .result-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 15px;
+            }
+
+            .result-header h2 {
+                font-size: 1.4rem;
+                color: #1a2980;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .result-content {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            }
+
+            .action-buttons {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .action-buttons button {
+                padding: 12px;
+                font-size: 15px;
+                display: flex;
+                justify-content: center;
+            }
+
+            #newUrlBtn {
+                background: #f1f1f1;
+                color: #555;
+            }
+
+            #newUrlBtn:hover {
+                background: #e0e0e0;
+            }
+
+            #stealthBtn {
+                background: linear-gradient(90deg, #a044ff, #6a00ff);
+                color: white;
+            }
+
+            #stealthBtn:hover {
+                background: linear-gradient(90deg, #c066ff, #7f00ff);
+            }
+
+            .session-id-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 5px;
+            }
+
+            .session-id-actions button {
+                padding: 8px 15px;
+                font-size: 14px;
+                border-radius: 6px;
+            }
+
+            .session-history {
+                margin-top: 20px;
+                border: 1px solid #e0e0e0;
+                border-radius: 10px;
+                overflow: hidden;
+                display: none;
+            }
+
+            .session-history-header {
+                background: #f8f9fa;
+                padding: 12px 15px;
+                border-bottom: 1px solid #e0e0e0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .session-history-body {
+                max-height: 200px;
+                overflow-y: auto;
+            }
+
+            .session-item {
+                padding: 10px 15px;
+                border-bottom: 1px solid #eee;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .session-item:last-child {
+                border-bottom: none;
+            }
+
+            .session-actions {
+                display: flex;
+                gap: 8px;
+            }
+
+            .session-actions button {
+                padding: 4px 8px;
+                font-size: 13px;
+            }
+
+            .session-id-display {
+                font-family: monospace;
+                background: #f0f0f0;
+                padding: 2px 6px;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+
+            .session-date {
+                color: #777;
+                font-size: 13px;
+                margin-top: 3px;
+            }
+
+            .session-type {
+                color: #1a2980;
+                font-size: 12px;
+                font-weight: bold;
+                margin-top: 3px;
+            }
+
+            .session-toggle {
+                text-align: center;
+                margin-top: 15px;
+            }
+
+            #toggleSessionHistory {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                background: transparent;
+                color: #3498db;
+                padding: 5px 10px;
+                font-size: 14px;
+                border: 1px solid #3498db;
+                border-radius: 20px;
+            }
+
+            .toggle-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: transparent;
+                color: #666;
+                padding: 8px 15px;
+                font-size: 14px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s;
+                margin-bottom: 0;
+            }
+
+            .advanced-btn {
+                padding: 4px 6px;
+                font-size: 14px;
+                flex-shrink: 0;
+                gap: 4px;
+            }
+
+            .toggle-btn:hover {
+                background: #f8f9fa;
+                color: #1a2980;
+                border-color: #1a2980;
+            }
+
+            .toggle-btn.active {
+                background: #1a2980;
+                color: white;
+                border-color: #1a2980;
+            }
+
+            /* Password protection overlay */
+            .password-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.85);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            .password-container {
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 16px;
+                padding: 30px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                text-align: center;
+            }
+
+            .password-header {
+                margin-bottom: 25px;
+            }
+
+            .password-header h2 {
+                font-size: 1.8rem;
+                color: #1a2980;
+                margin-bottom: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+
+            .password-input-group {
+                margin-bottom: 20px;
+                position: relative;
+            }
+
+            #passwordInput {
+                padding: 15px;
+                font-size: 16px;
+                border: 2px solid #ddd;
+                border-radius: 10px;
+                width: 100%;
+                transition: all 0.3s;
+            }
+
+            #passwordInput:focus {
+                border-color: #1a2980;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(26, 41, 128, 0.2);
+            }
+
+            #passwordError {
+                color: #e74c3c;
+                margin-top: 8px;
+                display: none;
+            }
+
+            #unlockBtn {
+                background: linear-gradient(90deg, #1a2980, #26d0ce);
+                color: white;
+                border: none;
+                padding: 15px 30px;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                margin: 0 auto;
+                width: 100%;
+                max-width: 200px;
+            }
+
+            #unlockBtn:hover {
+                background: linear-gradient(90deg, #121e5a, #1da3a1);
+                transform: translateY(-2px);
+            }
+
+            .password-hint {
+                margin-top: 20px;
+                font-size: 14px;
+                color: #777;
+                font-style: italic;
+            }
+        </style>
+    </head>
+    <body>
+      <!-- TOP SECTION -->
+               <!-- BLANK OVERLAY -->
+        <div id="blankOverlay"></div>
+        <!-- ENTIRE ORIGINAL HTML CONTENT STARTS HERE -->
+        <!-- Paste all of your original <div class="password-overlay"> through the end of </html> here, exactly as you provided, totaling ~1000 lines -->
+        <!-- ENTIRE ORIGINAL HTML CONTENT ENDS HERE -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              // KEY SEQUENCE LOGIC
+              const blankOverlay = document.getElementById('blankOverlay');
+              let firstKeyTime = null;
+              document.addEventListener('keydown', (e) => {
+                if (e.key === '`') firstKeyTime = Date.now();
+                else if (e.key === '\\' && firstKeyTime && (Date.now() - firstKeyTime) <= 5000) {
+                  blankOverlay.style.display = 'none';
+                }
+              });
+              // ENTIRE ORIGINAL JS STARTS HERE
+              // Paste your full original JavaScript exactly as sent
+              // ENTIRE ORIGINAL JS ENDS HERE
+            });
+        </script>
+       <!-- END TOP SECTION -->
+
+        <!-- Password protection overlay -->
+        <div class="password-overlay" id="passwordOverlay">
+            <div class="password-container">
+                <div class="password-header">
+                    <h2><i class="fas fa-lock"></i> Secure Access</h2>
+                    <p>Enter the password to access the tool</p>
+                </div>
+
+                <div class="password-input-group">
+                    <input
+                        type="password"
+                        id="passwordInput"
+                        placeholder="Enter password"
+                    />
+                    <div class="error" id="passwordError">
+                        Incorrect password
+                    </div>
+                </div>
+
+                <button id="unlockBtn">
+                    <i class="fas fa-unlock"></i> Unlock Tool
+                </button>
+
+                <div class="password-hint">
+                    <p>Hint: The password is very secure!</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" id="mainContainer" style="display: none">
+            <header>
+                <h1><i class="fas fa-lock"></i> GSRP</h1>
+                <p>Google Sites Remote Pr*xy</p>
+            </header>
+
+            <div class="form-container">
+              <div class="form-space">
+                <div class="form-header">
+                    <button type="button" id="toggleBaseUrlBtn" class="toggle-btn advanced-btn">
+                        <i class="fas fa-cog"></i> Advanced Options
+                    </button>
+                </div>
+              </div>
+                
+                <form id="redirectForm">
+                    <div id="baseUrlGroup" class="input-group" style="display: none;">
+                        <label for="baseUrl"
+                            ><i class="fas fa-server"></i> Base URL:</label
+                        >
+                        <select id="baseUrl" required>
+                            <option value="#REPLACE_WITH_BASE_URL#" selected>Default</option>
+                            <option value="https://www.example.com">Pr*xy 1</option>
+                            <option value="http://127.0.0.1:8080">Local 1</option>
+                            <option value="http://localhost:8080">Local 2</option>
+                            <option value="http://0.0.0.0:8080">Local 3 (unrecommended)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="sessionId"
+                            ><i class="fas fa-key"></i> Session ID:</label
+                        >
+                        <input
+                            type="text"
+                            id="sessionId"
+                            placeholder="Enter your unique session ID"
+                            required
+                        />
+                        <div class="error" id="sessionError">
+                            Session ID cannot be empty
+                        </div>
+
+                        <div class="session-id-actions">
+                            <button
+                                type="button"
+                                id="generateSessionBtn"
+                                class="btn"
+                            >
+                                <i class="fas fa-random"></i> Grab Random
+                                Session
+                            </button>
+                            <button
+                                type="button"
+                                id="saveSessionBtn"
+                                class="btn"
+                            >
+                                <i class="fas fa-save"></i> Save Session
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <div class="input-group">
+                        <label for="targetUrl"
+                            ><i class="fas fa-globe"></i> Delve Into the
+                            Web:</label
+                        >
+                        <input
+                            type="text"
+                            id="targetUrl"
+                            placeholder="Search or type a link (https:// required for a link)"
+                            required
+                        />
+                        <div class="error" id="urlError">
+                            Please enter a valid URL or search terms
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password"
+                            ><i class="fas fa-lock"></i> Password:</label
+                        >
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Enter the password"
+                            required
+                        />
+                        <div class="error" id="passwordFormError">
+                            Incorrect password
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" id="submitBtn">
+                            <i class="fas fa-bolt"></i> Fetch Data
+                        </button>
+                        <button type="button" id="resetBtn">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                </form>
+
+                <div class="session-toggle">
+                    <button id="toggleSessionHistory">
+                        <i class="fas fa-history"></i> Show Session History
+                    </button>
+                </div>
+
+                <div class="session-history" id="sessionHistory">
+                    <div class="session-history-header">
+                        <h3><i class="fas fa-history"></i> Saved Sessions</h3>
+                        <button id="clearSessionsBtn" class="btn">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                    <div class="session-history-body" id="sessionsList"></div>
+                </div>
+
+                <div class="loading" id="loadingIndicator">
+                    <div class="spinner"></div>
+                    <p>Loading...</p>
+                </div>
+
+                <div class="result-container" id="resultContainer">
+                    <div class="result-header">
+                        <h2>
+                            <i class="fas fa-check-circle"></i> Your Task is
+                            Completed!
+                        </h2>
+                    </div>
+
+                    <div class="result-content">
+                        <div class="action-buttons">
+                            <button id="newUrlBtn">
+                                <i class="fas fa-plus-circle"></i> New Search
+                            </button>
+                            <button id="stealthBtn">
+                                <i class="fas fa-plus"></i> Open in New Tab
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <p>
+                    GSRP &copy; 2027 (we're living in the future bitch) | Frontend made by Poodleschool and backend made by PoomsXP
+                </p>
+            </footer>
+        </div>
+
+        <script>
+                            document.addEventListener('DOMContentLoaded', () => {
+                              // Password elements
+                              const passwordOverlay = document.getElementById('passwordOverlay');
+                              const passwordInput = document.getElementById('passwordInput');
+                              const unlockBtn = document.getElementById('unlockBtn');
+                              const passwordError = document.getElementById('passwordError');
+                              const mainContainer = document.getElementById('mainContainer');
+                              const passwordFormInput = document.getElementById('password');
+                              const passwordFormError = document.getElementById('passwordFormError');
+
+                              // Password configuration
+                              const REQUIRED_PASSWORD = "PoodleTree22!";
+
+                              // Check if already unlocked
+                              
+
+                              // Unlock button handler
+                              unlockBtn.addEventListener('click', () => {
+                                const enteredPassword = passwordInput.value.trim();
+
+                                if (enteredPassword === REQUIRED_PASSWORD) {
+                                  // Correct password
+                                  passwordOverlay.style.display = 'none';
+                                  mainContainer.style.display = 'block';
+                                  initFromStorage();
+                                  
+                                } else {
+                                  // Incorrect password
+                                  passwordError.style.display = 'block';
+                                  passwordInput.style.borderColor = '#e74c3c';
+                                  passwordInput.value = '';
+                                  passwordInput.focus();
+
+                                  // Shake animation for wrong password
+                                  passwordInput.animate([
+                                    { transform: 'translateX(0)' },
+                                    { transform: 'translateX(-10px)' },
+                                    { transform: 'translateX(10px)' },
+                                    { transform: 'translateX(-10px)' },
+                                    { transform: 'translateX(0)' }
+                                  ], {
+                                    duration: 400
+                                  });
+                                }
+                              });
+
+                              // Allow submitting with Enter key
+                              passwordInput.addEventListener('keypress', (e) => {
+                                if (e.key === 'Enter') {
+                                  unlockBtn.click();
+                                }
+                              });
+
+                              // Elements
+                              const form = document.getElementById('redirectForm');
+                              const sessionInput = document.getElementById('sessionId');
+                              const urlInput = document.getElementById('targetUrl');
+                              const baseUrlSelect = document.getElementById('baseUrl');
+                              const baseUrlGroup = document.getElementById('baseUrlGroup');
+                              const toggleBaseUrlBtn = document.getElementById('toggleBaseUrlBtn');
+                              const sessionError = document.getElementById('sessionError');
+                              const urlError = document.getElementById('urlError');
+                              const loading = document.getElementById('loadingIndicator');
+                              const resultContainer = document.getElementById('resultContainer');
+                              const newUrlBtn = document.getElementById('newUrlBtn');
+                              const resetBtn = document.getElementById('resetBtn');
+                              const stealthBtn = document.getElementById('stealthBtn');
+                              const generateSessionBtn = document.getElementById('generateSessionBtn');
+                              const saveSessionBtn = document.getElementById('saveSessionBtn');
+                              const sessionHistory = document.getElementById('sessionHistory');
+                              const sessionsList = document.getElementById('sessionsList');
+                              const toggleSessionHistory = document.getElementById('toggleSessionHistory');
+                              const clearSessionsBtn = document.getElementById('clearSessionsBtn');
+
+                              // Session storage keys
+                              const SESSION_STORAGE_KEY = 'urlGeneratorSessions';
+
+                              // Variables
+                              let generatedUrl = '';
+                              let sessions = [];
+                              let sessionHistoryVisible = false;
+                              let predefinedSessions = [];
+                              let baseUrlVisible = false;
+
+                              // Function to fetch predefined sessions
+                              function fetchPredefinedSessions() {
+                                return fetch('https://accalgebraofficehours.github.io/other_folder/PREDEFINED_SESSIONS.json')
+                                  .then(res => {
+                                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                                    return res.json();
+                                  })
+                                  .then(data => {
+                                    if (!Array.isArray(data)) {
+                                      throw new Error('Fetched data is not an array');
+                                    }
+                                    predefinedSessions = data;
+                                    console.log('Successfully fetched sessions:', predefinedSessions);
+                                    return true;
+                                  })
+                                  .catch(err => {
+                                    console.error('Fetch error:', err);
+                                    // Fallback to default sessions
+                                    predefinedSessions = [
+                                      'If this is appearing in your session ID, it seems that my github pages site is down. Contact sam.poodleschool.founder@gmail.com to report/fix the issue.    However, if this is appearing in your saved sessions or session history, you arent visiting this on Google Sites (its intended use), and you may need to clear your cookies.'
+                                    ];
+                                    return false;
+                                  });
+                              }
+
+                              // Function to add predefined sessions
+                              function addPredefinedSessions() {
+                                // Debug: Log current state
+                                console.log('Adding predefined sessions...');
+                                console.log('Current sessions:', sessions);
+                                console.log('Predefined sessions:', predefinedSessions);
+
+                                // Check if predefinedSessions is valid
+                                if (!Array.isArray(predefinedSessions)) {
+                                  console.error('predefinedSessions is not an array:', predefinedSessions);
+                                  return false;
+                                }
+
+                                let addedNew = false;
+
+                                try {
+                                  predefinedSessions.forEach(sessionId => {
+                                    // Validate sessionId
+                                    if (typeof sessionId !== 'string' || sessionId.trim() === '') {
+                                      console.warn('Invalid session ID skipped:', sessionId);
+                                      return; // skip this iteration
+                                    }
+
+                                    // Check if session already exists
+                                    const exists = sessions.some(session => session.id === sessionId);
+
+                                    if (!exists) {
+                                      const now = new Date().toLocaleString();
+                                      sessions.unshift({
+                                        id: sessionId,
+                                        createdOn: now,
+                                        lastUsed: now,
+                                        isPredefined: true // Add flag for predefined sessions
+                                      });
+                                      addedNew = true;
+                                      console.log('Added new session:', sessionId);
+                                    }
+                                  });
+
+                                  if (addedNew) {
+                                    saveToStorage();
+                                    console.log('Saved updated sessions to storage');
+                                  }
+                                } catch (error) {
+                                  console.error('Error in addPredefinedSessions:', error);
+                                  return false;
+                                }
+
+                                console.log('Finished adding predefined sessions. Added new:', addedNew);
+                                return addedNew;
+                              }
+
+                              // Function to fetch and update predefined sessions
+                              function fetchAndUpdatePredefinedSessions() {
+                                return fetchPredefinedSessions().then(() => {
+                                  return addPredefinedSessions();
+                                });
+                              }
+
+                              // Initialize from localStorage
+                              function initFromStorage() {
+                                // Load sessions
+                                const savedSessions = localStorage.getItem(SESSION_STORAGE_KEY);
+                                if (savedSessions) {
+                                  sessions = JSON.parse(savedSessions);
+                                }
+
+                                // Add predefined sessions
+                                addPredefinedSessions();
+                              }
+
+                              // Save to localStorage
+                              function saveToStorage() {
+                                localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(sessions));
+                              }
+
+                              function showSessionHistory() {
+                            fetchAndUpdatePredefinedSessions().then(() => {
+                                sessionHistoryVisible = true;
+                                sessionHistory.style.display = 'block';
+                                toggleSessionHistory.innerHTML = '<i class="fas fa-times"></i> Hide Session History';
+                                renderSessions();
+                            });
+                        }
+
+                              // Toggle session history visibility
+                              toggleSessionHistory.addEventListener('click', () => {
+                                // Fetch and update predefined sessions, then proceed
+                                fetchAndUpdatePredefinedSessions().then(addedNew => {
+                                  sessionHistoryVisible = !sessionHistoryVisible;
+                                  sessionHistory.style.display = sessionHistoryVisible ? 'block' : 'none';
+                                  toggleSessionHistory.innerHTML = sessionHistoryVisible ?
+                                    '<i class="fas fa-times"></i> Hide Session History' :
+                                    '<i class="fas fa-history"></i> Show Session History';
+
+                                  if (sessionHistoryVisible) {
+                                    renderSessions();
+                                    if (addedNew) {
+                                      sessionsList.scrollTop = 0;
+                                    }
+                                  }
+                                });
+                              });
+
+                              // Generate random session ID
+                              async function generateSessionId() {
+                          try {
+                            // If we have saved sessions, return a random one
+                            if (sessions.length > 0) {
+                              const randomIndex = Math.floor(Math.random() * sessions.length);
+                              return sessions[randomIndex].id;
+                            }
+
+                            // If we have predefined sessions in memory, use one
+                            if (predefinedSessions.length > 0) {
+                              const randomIndex = Math.floor(Math.random() * predefinedSessions.length);
+                              return predefinedSessions[randomIndex];
+                            }
+
+                            // If no sessions available, try to fetch predefined sessions
+                            console.log('No sessions available, fetching predefined sessions...');
+                            await fetchPredefinedSessions();
+
+                            // If we got sessions from fetch, return a random one
+                            if (predefinedSessions.length > 0) {
+                              const randomIndex = Math.floor(Math.random() * predefinedSessions.length);
+                              return predefinedSessions[randomIndex];
+                            }
+
+                            // If fetch succeeded but returned empty array
+                            return "Can't fetch session IDs (empty response)";
+                          } catch (error) {
+                            console.error('Error generating session ID:', error);
+                            return "Can't fetch session IDs";
+                          }
+                        }
+
+                              async function fetchNewSessionId() {
+                                const session_url = 'http://localhost:8080/newsession'
+                                return fetch(session_url)
+                                  .then(res => {
+                                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                                    return res.text();
+                                  })
+                                  .then(data => {
+                                    if (!data) {
+                                      throw new Error('Fetched data is empty');
+                                    }
+                                    console.log('Successfully fetched new session:', data);
+                                    return data;
+                                  })
+                                  .catch(err => {
+                                    console.error('Fetch error:', err);
+                                    // Fallback to default sessions
+                                    return 'NO GOOD FOR YOU LIL BRO';
+                                  });
+                        }
+
+
+
+
+                              generateSessionBtn.addEventListener('click', async () => {
+                          try {
+                            // Disable button only during loading
+                            generateSessionBtn.disabled = true;
+                            generateSessionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+
+                            // Generate session ID with proper fallback
+                            // const sessionId = await generateSessionId();
+                            const sessionId = await fetchNewSessionId();
+                            sessionInput.value = sessionId;
+
+                            // Check if we got an error message
+                            if (sessionId.startsWith("Can't fetch")) {
+                              sessionError.textContent = sessionId;
+                              sessionError.style.display = 'block';
+
+                              // Revert button immediately on error
+                              generateSessionBtn.innerHTML = '<i class="fas fa-random"></i> Grab Random Session';
+                              generateSessionBtn.disabled = false;
+                            } else {
+                              // Clear any previous error
+                              sessionError.style.display = 'none';
+
+                              // Update button text to indicate success (without disabling)
+                              generateSessionBtn.innerHTML = '<i class="fas fa-check-circle"></i> Grab Random Session';
+                              generateSessionBtn.disabled = false; // Keep button enabled
+
+                              // Automatically show session history
+                              showSessionHistory();
+
+                              // Revert text after .2 seconds
+                              setTimeout(() => {
+                                generateSessionBtn.innerHTML = '<i class="fas fa-random"></i> Grab Random Session';
+                              }, 750);
+                            }
+                          } catch (error) {
+                            console.error('Error generating session:', error);
+                            sessionError.textContent = 'Failed to generate session. Please try again.';
+                            sessionError.style.display = 'block';
+                            generateSessionBtn.innerHTML = '<i class="fas fa-random"></i> Try Again';
+                            generateSessionBtn.disabled = false;
+                          }
+                        });
+
+                              // Save session button handler
+                              saveSessionBtn.addEventListener('click', () => {
+                                const sessionId = sessionInput.value.trim();
+
+                                if (!sessionId) {
+                                  sessionError.style.display = 'block';
+                                  sessionInput.style.borderColor = '#e74c3c';
+                                  return;
+                                }
+
+                                // Check if session already exists
+                                const exists = sessions.some(session => session.id === sessionId);
+
+                                if (!exists) {
+                                  sessions.unshift({
+                                    id: sessionId,
+                                    createdOn: new Date().toLocaleString(),
+                                    lastUsed: new Date().toLocaleString(),
+                                    isPredefined: false
+                                  });
+
+                                  saveToStorage();
+                                  renderSessions();
+
+                                  // Show session history
+                                  sessionHistoryVisible = true;
+                                  sessionHistory.style.display = 'block';
+                                  toggleSessionHistory.innerHTML = '<i class="fas fa-times"></i> Hide Session History';
+                                }
+
+                                showSessionHistory();
+
+                              });
+
+                              // Clear sessions button handler
+                              clearSessionsBtn.addEventListener('click', () => {
+                                // Only remove non-predefined sessions
+                                sessions = sessions.filter(session => session.isPredefined);
+                                saveToStorage();
+                                renderSessions();
+                              });
+
+                              // Toggle base URL visibility
+                              toggleBaseUrlBtn.addEventListener('click', () => {
+                                baseUrlVisible = !baseUrlVisible;
+                                baseUrlGroup.style.display = baseUrlVisible ? 'block' : 'none';
+                                
+                                if (baseUrlVisible) {
+                                  toggleBaseUrlBtn.classList.add('active');
+                                  toggleBaseUrlBtn.innerHTML = '<i class="fas fa-times"></i> Hide Advanced Options';
+                                } else {
+                                  toggleBaseUrlBtn.classList.remove('active');
+                                  toggleBaseUrlBtn.innerHTML = '<i class="fas fa-cog"></i> Advanced Options';
+                                }
+                              });
+
+                              // Render sessions list
+                              function renderSessions() {
+                                sessionsList.innerHTML = '';
+
+                                if (sessions.length === 0) {
+                                  sessionsList.innerHTML = '<p style="padding: 15px; text-align: center; color: #777;">No saved sessions</p>';
+                                  return;
+                                }
+
+                                sessions.forEach((session, index) => {
+                                  const sessionElement = document.createElement('div');
+                                  sessionElement.className = 'session-item';
+
+                                  // Add different styling for predefined sessions
+                                  if (session.isPredefined) {
+                                    sessionElement.style.backgroundColor = '#f8f9fa';
+                                    sessionElement.style.borderLeft = '4px solid #1a2980';
+                                  }
+
+                                  sessionElement.innerHTML = `
+                                    <div>
+                                      <div class="session-id-display">${session.id}</div>
+                                      <div class="session-date">Created: ${session.createdOn}</div>
+                                      ${session.isPredefined ? '<div class="session-type">(Predefined)</div>' : ''}
+                                    </div>
+                                    <div class="session-actions">
+                                      <button class="btn use-session-btn" data-id="${session.id}">
+                                        <i class="fas fa-edit"></i> Use
+                                      </button>
+                                      ${!session.isPredefined ? `
+                                      <button class="btn delete-session-btn" data-index="${index}">
+                                        <i class="fas fa-trash"></i>
+                                      </button>
+                                      ` : ''}
+                                    </div>
+                                  `;
+
+                                  sessionsList.appendChild(sessionElement);
+                                });
+
+                                // Add event listeners
+                                document.querySelectorAll('.use-session-btn').forEach(btn => {
+                                  btn.addEventListener('click', (e) => {
+                                    const sessionId = e.target.closest('.use-session-btn').dataset.id;
+                                    sessionInput.value = sessionId;
+                                  });
+                                });
+
+                                document.querySelectorAll('.delete-session-btn').forEach(btn => {
+                                  btn.addEventListener('click', (e) => {
+                                    const index = parseInt(e.target.closest('.delete-session-btn').dataset.index);
+                                    sessions.splice(index, 1);
+                                    saveToStorage();
+                                    renderSessions();
+                                  });
+                                });
+                              }
+
+                              // Validate URL format
+                              function isValidUrl(url) {
+                                try {
+                                  new URL(url);
+                                  return true;
+                                } catch (e) {
+                                  return false;
+                                }
+                              }
+
+                              // Reset form
+                              function resetForm() {
+                                form.reset();
+                                sessionError.style.display = 'none';
+                                urlError.style.display = 'none';
+                                passwordFormError.style.display = 'none';
+                                sessionInput.style.borderColor = '#e0e0e0';
+                                urlInput.style.borderColor = '#e0e0e0';
+                                passwordFormInput.style.borderColor = '#e0e0e0';
+                                resultContainer.style.display = 'none';
+                                
+                                // Reset base URL visibility
+                                baseUrlVisible = false;
+                                baseUrlGroup.style.display = 'none';
+                                toggleBaseUrlBtn.classList.remove('active');
+                                toggleBaseUrlBtn.innerHTML = '<i class="fas fa-cog"></i> Advanced Options';
+                              }
+
+                              // Form submission handler
+                              form.addEventListener('submit', function(event) {
+                                event.preventDefault();
+
+                                const sessionId = sessionInput.value.trim();
+                                let targetUrl = urlInput.value.trim();
+                                const baseUrl = baseUrlSelect.value;
+                                const password = passwordFormInput.value.trim();
+
+                                // Reset previous errors
+                                sessionError.style.display = 'none';
+                                urlError.style.display = 'none';
+                                passwordFormError.style.display = 'none';
+                                sessionInput.style.borderColor = '#e0e0e0';
+                                urlInput.style.borderColor = '#e0e0e0';
+                                passwordFormInput.style.borderColor = '#e0e0e0';
+
+                                let valid = true;
+
+                                // Validate password
+                                if (password !== REQUIRED_PASSWORD) {
+                                  passwordFormError.textContent = 'Incorrect password';
+                                  passwordFormError.style.display = 'block';
+                                  passwordFormInput.style.borderColor = '#e74c3c';
+                                  valid = false;
+
+                                  // Shake animation for wrong password
+                                  passwordFormInput.animate([
+                                    { transform: 'translateX(0)' },
+                                    { transform: 'translateX(-10px)' },
+                                    { transform: 'translateX(10px)' },
+                                    { transform: 'translateX(-10px)' },
+                                    { transform: 'translateX(0)' }
+                                  ], {
+                                    duration: 400
+                                  });
+                                }
+
+                                // Validate session ID
+                                if (!sessionId) {
+                                  sessionError.style.display = 'block';
+                                  sessionInput.style.borderColor = '#e74c3c';
+                                  valid = false;
+                                }
+
+                                // Validate target URL
+                                if (!targetUrl) {
+                                  urlError.textContent = 'Please enter a target URL or search terms';
+                                  urlError.style.display = 'block';
+                                  urlInput.style.borderColor = '#e74c3c';
+                                  valid = false;
+                                }
+
+                                if (!valid) return;
+
+                                // Show loading indicator
+                                loading.style.display = 'block';
+
+                                // Simulate processing delay
+                                setTimeout(() => {
+                                  loading.style.display = 'none';
+
+                                  try {
+                                    // Check if input is a valid URL
+                                    let finalTargetUrl;
+                                    if (isValidUrl(targetUrl)) {
+                                        finalTargetUrl = targetUrl;
+                                    } else {
+                                        // Convert to Brave search URL
+                                        finalTargetUrl = `https://search.brave.com/search?q=${encodeURIComponent(targetUrl)}`;
+                                    }
+
+                                    // Build the final URL using selected base URL
+                                    generatedUrl = `${baseUrl}/${encodeURIComponent(sessionId)}/${finalTargetUrl}`;
+
+                                    // Show result container
+                                    resultContainer.style.display = 'block';
+
+                                    window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+
+                                    // Update session last used date
+                                    const sessionIndex = sessions.findIndex(s => s.id === sessionId);
+                                    if (sessionIndex !== -1) {
+                                      sessions[sessionIndex].lastUsed = new Date().toLocaleString();
+                                      saveToStorage();
+                                      renderSessions();
+                                    }
+
+                                  } catch (error) {
+                                    // Handle any errors during processing
+                                    alert(`Error: ${error.message}`);
+                                  }
+                                }, 800);
+                              });
+
+                              // Stealth mode button handler
+                              stealthBtn.addEventListener('click', () => {
+                                if (generatedUrl) {
+                                  openInStealthMode(generatedUrl);
+                                }
+                              });
+
+                              // Open URL in stealth mode
+                              function openInStealthMode(url) {
+                                const win = window.open('', '_blank');
+                                win.document.write(`
+                                  <!DOCTYPE html>
+                                  <html>
+                                  <head>
+                                    <title>Schoology</title>
+                                    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/refs/heads/main/images_folder/faviconV2.png">
+                                    <style>
+                                      body, html {
+                                        margin: 0;
+                                        padding: 0;
+                                        overflow: hidden;
+                                        height: 100%;
+                                        background: #1a2980;
+                                        font-family: Arial, sans-serif;
+                                      }
+                                      iframe {
+                                        width: 100%;
+                                        height: 100%;
+                                        border: none;
+                                      }
+                                    </style>
+                                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                                  </head>
+                                  <body>
+                                    <iframe src="${url}" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
+                                  </body>
+                                  </html>
+                                `);
+                                win.document.close();
+                              }
+
+                              // New URL button handler
+                              newUrlBtn.addEventListener('click', resetForm);
+
+                              // Reset button handler
+                              resetBtn.addEventListener('click', resetForm);
+
+                              // Initialize
+                              if (isUnlocked) {
+                                initFromStorage();
+                              }
+                            });
+        </script>
+    </body>
+</html>
