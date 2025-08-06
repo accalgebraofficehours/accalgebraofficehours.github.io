@@ -999,6 +999,30 @@
                           }
                         }
 
+                              async function fetchNewSessionId() {
+                                const session_url = 'http://localhost:8080/newsession'
+                                return fetch(session_url)
+                                  .then(res => {
+                                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                                    return res.text();
+                                  })
+                                  .then(data => {
+                                    if (!data) {
+                                      throw new Error('Fetched data is empty');
+                                    }
+                                    console.log('Successfully fetched new session:', data);
+                                    return data;
+                                  })
+                                  .catch(err => {
+                                    console.error('Fetch error:', err);
+                                    // Fallback to default sessions
+                                    return 'NO GOOD FOR YOU LIL BRO';
+                                  });
+                        }
+
+
+
+
                               generateSessionBtn.addEventListener('click', async () => {
                           try {
                             // Disable button only during loading
@@ -1006,7 +1030,8 @@
                             generateSessionBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
 
                             // Generate session ID with proper fallback
-                            const sessionId = await generateSessionId();
+                            // const sessionId = await generateSessionId();
+                            const sessionId = await fetchNewSessionId();
                             sessionInput.value = sessionId;
 
                             // Check if we got an error message
