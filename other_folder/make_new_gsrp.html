@@ -1,0 +1,284 @@
+<html>
+<button onclick="window.open('https://sites.google.com/new', '_blank')">
+  Create Blank Google Site
+</button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<head>
+  <meta charset="UTF-8">
+  <title>Auto-Copy String Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .btn {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+    }
+
+    .btn:hover .btn-slide-show-text1 {
+      margin-left: 65px;
+    }
+
+    .btn-moving-gradient {
+      height: 55px;
+      width: 200px;
+      font-size: 16px;
+      font-weight: 600;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      border: none;
+      background-size: 300% 100%;
+      border-radius: 50px;
+    }
+
+    .btn-moving-gradient:hover {
+      transition: 0.5s ease-in-out;
+      background-position: 100% 0px;
+    }
+
+    .btn-moving-gradient--pink {
+      background-image: linear-gradient(
+        90deg,
+        rgb(255, 97, 171),
+        rgb(255, 176, 97),
+        rgb(255, 97, 97),
+        rgb(255, 99, 146)
+      );
+      box-shadow: rgb(255, 123, 97) 0px 4px 15px 0px;
+    }
+
+    #generatedString {
+      margin-top: 20px;
+      font-size: 18px;
+      font-family: monospace;
+      width: 420px;
+      text-align: center;
+    }
+
+    #copyNotice {
+      color: green;
+      font-size: 14px;
+      display: none;
+      margin-top: 5px;
+    }
+  </style>
+  <script>
+    function createRandomString() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-';
+      let result = '';
+      for (let i = 0; i < 30; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    function generateInitialString() {
+      const input = document.getElementById('generatedString');
+      input.value = createRandomString();
+    }
+
+    function regenerateAndCopy() {
+      const input = document.getElementById('generatedString');
+      input.value = createRandomString();
+      input.select();
+      input.setSelectionRange(0, 999);
+
+      try {
+        const success = document.execCommand('copy');
+        if (success) {
+          showCopyNotice();
+        } else {
+          alert("Copy failed. Please copy manually.");
+        }
+      } catch (err) {
+        alert("Copy not supported in this browser.");
+      }
+    }
+
+    function showCopyNotice() {
+      const notice = document.getElementById('copyNotice');
+      notice.style.display = 'inline';
+      setTimeout(() => {
+        notice.style.display = 'none';
+      }, 1500);
+    }
+
+    window.onload = generateInitialString;
+  </script>
+</head>
+<body>
+  <h1>Random String Generator</h1>
+
+  <button class="btn btn-moving-gradient btn-moving-gradient--pink" onclick="regenerateAndCopy()">
+    Regenerate
+  </button><br>
+
+  <input type="text" id="generatedString" readonly>
+  <div id="copyNotice">Copied to clipboard!</div>
+</body>
+
+
+
+
+
+
+
+
+
+  
+  
+<head>
+  <meta charset="UTF-8">
+  <title>Rounded Container</title>
+  <style>
+    .rounded-container {
+      width: 300px;
+      padding: 20px;
+      margin: 50px auto;
+      background-color: transparent;        /* No background */
+      border: 4px solid #000000;            /* Outline (same as old background) */
+      border-radius: 15px;                  /* Rounded corners */
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rounded-container">
+    
+    <p>Blank space character (U+2800):⠀</p>
+  </div>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Code Display in Rounded Container</title>
+  <style>
+    .rounded-container {
+      width: 90%;
+      max-width: 800px;
+      padding: 20px;
+      margin: 50px auto;
+      background-color: transparent;
+      border: 4px solid #000000;
+      border-radius: 15px;
+      font-family: monospace, monospace;
+      white-space: pre-wrap; /* allow line breaks */
+      overflow-x: auto; /* horizontal scroll if needed */
+      color: #333;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="rounded-container">
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Run In Google Sites Pls you dipshit&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  Loading...
+
+  &lt;script&gt;
+    // Configuration
+    const CONFIG = {
+      baseUrl: 'http://127.0.0.1:8080',
+      sourceUrl: 'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/gsrp_folder/GSRP.html',
+      placeholder: '#REPLACE_WITH_BASE_URL#',
+      loadingTimeout: 600000 // 60 seconds or 600000 milliseconds or 1 minute or 1/60th of an hour or 1/1440th of a day or 1/525960th of a year or  1/7255200000000th of the universes existance
+    };
+
+    async function loadGSRP() {
+      const container = document.getElementById('gsrp-container');
+      
+      try {
+        // Add timeout to prevent hanging
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), CONFIG.loadingTimeout);
+        
+        const response = await fetch(CONFIG.sourceUrl, {
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        let html = await response.text();
+        
+        // Replace base URL placeholder
+        html = html.replace(new RegExp(CONFIG.placeholder, 'g'), CONFIG.baseUrl);
+        
+        // Replace the entire document
+        document.open();
+        document.write(html);
+        document.close();
+        
+      } catch (error) {
+        console.error('Failed to load GSRP:', error);
+        
+        let errorMessage = 'Failed to load GSRP.';
+        if (error.name === 'AbortError') {
+          errorMessage = 'Loading timed out. Please try again.';
+        } else if (error.message.includes('HTTP')) {
+          errorMessage = `Server error: ${error.message}`;
+        } else if (error.message.includes('fetch')) {
+          errorMessage = 'Network error. Please check your connection.';
+        }
+        
+        container.innerHTML = `
+          &lt;div class="error-message"&gt;${errorMessage}&lt;/div&gt;
+          &lt;button onclick="location.reload()"&gt;Retry&lt;/button&gt;
+        `;
+      }
+    }
+
+    // Start loading when page is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadGSRP);
+    } else {
+      loadGSRP();
+    }
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+  </div>
+
+</body>
+</html>
