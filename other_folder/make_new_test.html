@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GSRP Creation Toolkit</title>
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/refs/heads/main/images_folder/gsrp_maker_favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
       margin: 0;
@@ -29,7 +30,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e1e2e, #2d2d44);
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       color: var(--light);
       line-height: 1.6;
       min-height: 100vh;
@@ -40,7 +41,7 @@
     }
 
     .container {
-      max-width: 1200px;
+      max-width: 1400px;
       width: 100%;
       margin: 0 auto;
     }
@@ -55,16 +56,29 @@
       box-shadow: var(--box-shadow);
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple), var(--accent-pink));
     }
 
     h1 {
       font-size: 2.8rem;
       margin-bottom: 10px;
-      background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+      background: linear-gradient(to right, var(--accent-blue), var(--accent-purple), var(--accent-pink));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       font-weight: 800;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
     .subtitle {
@@ -74,12 +88,12 @@
       margin: 0 auto;
     }
 
-    .cards-container {
+    .top-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 30px;
       width: 100%;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
     }
 
     .card {
@@ -92,12 +106,31 @@
       transition: var(--transition);
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    }
+
+    .card:nth-child(2)::before {
+      background: linear-gradient(90deg, var(--accent-pink), var(--accent-orange));
+    }
+
+    .card:nth-child(3)::before {
+      background: linear-gradient(90deg, #4ade80, #22d3ee);
     }
 
     .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-      border-color: rgba(142, 45, 226, 0.3);
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     }
 
     .card h2 {
@@ -120,6 +153,14 @@
       font-size: 1.2rem;
     }
 
+    .card:nth-child(2) h2 i {
+      background: linear-gradient(to right, var(--accent-pink), var(--accent-orange));
+    }
+
+    .card:nth-child(3) h2 i {
+      background: linear-gradient(to right, #4ade80, #22d3ee);
+    }
+
     .btn {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-transform: uppercase;
@@ -138,14 +179,29 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
 
-    .btn:hover {
-      transform: scale(1.03);
+    .btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: inherit;
+      z-index: -1;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover::before {
+      opacity: 0.8;
     }
 
     .btn:active {
-      transform: scale(0.98);
+      transform: scale(0.95);
     }
 
     .btn-blue {
@@ -160,8 +216,10 @@
       box-shadow: 0 4px 20px rgba(232, 67, 147, 0.3);
     }
 
-    .btn i {
-      font-size: 1.2rem;
+    .btn-green {
+      background: linear-gradient(90deg, #4ade80, #22d3ee);
+      color: white;
+      box-shadow: 0 4px 20px rgba(34, 211, 238, 0.3);
     }
 
     .input-group {
@@ -196,6 +254,7 @@
       font-size: 14px;
       margin-top: 8px;
       height: 20px;
+      text-align: center;
     }
 
     .rounded-container {
@@ -210,6 +269,55 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .rounded-container:hover {
+      background: rgba(20, 20, 36, 0.7);
+      transform: scale(1.02);
+    }
+
+    .code-section {
+      background: rgba(30, 30, 46, 0.7);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--box-shadow);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .code-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #ff6b6b, #ffa502);
+    }
+
+    .code-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #e0e0ff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .code-section h2 i {
+      background: linear-gradient(to right, #ff6b6b, #ffa502);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
     }
 
     .code-container {
@@ -222,12 +330,12 @@
       white-space: pre-wrap;
       overflow-x: auto;
       color: #e0e0ff;
-      font-size: 14px;
+      font-size: 16px;
       text-align: left;
-      margin-top: 15px;
       line-height: 1.8;
-      max-height: 400px;
+      height: 500px;
       overflow-y: auto;
+      position: relative;
     }
 
     .code-container code {
@@ -240,11 +348,15 @@
       border-radius: var(--border-radius);
       margin-top: 20px;
       font-size: 0.95rem;
+      border-left: 4px solid var(--accent-blue);
     }
 
     .instructions h3 {
       color: var(--accent-blue);
       margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .instructions ol {
@@ -252,7 +364,21 @@
     }
 
     .instructions li {
-      margin-bottom: 8px;
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 30px;
+    }
+
+    .instructions li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent-purple);
+      font-weight: bold;
+    }
+
+    .instructions li strong {
+      color: var(--accent-pink);
     }
 
     footer {
@@ -262,32 +388,59 @@
       font-size: 0.9rem;
       margin-top: auto;
       width: 100%;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    @media (max-width: 1200px) {
+      .top-cards {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      }
     }
 
     @media (max-width: 768px) {
-      .cards-container {
-        grid-template-columns: 1fr;
-      }
-      
       h1 {
         font-size: 2.2rem;
       }
       
-      .card {
+      .card, .code-section {
         padding: 20px;
       }
+      
+      .code-container {
+        height: 400px;
+        font-size: 14px;
+      }
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(20, 20, 36, 0.5);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(45deg, var(--accent-pink), var(--accent-orange));
     }
   </style>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Create a new GSRP</h1>
+      <h1>Create a New GSRP</h1>
       <p class="subtitle">Your all-in-one toolkit for generating Google Sites and required components</p>
     </header>
 
-    <div class="cards-container">
+    <div class="top-cards">
       <!-- Google Site Creation Card -->
       <div class="card">
         <h2><i class="fas fa-globe"></i> Create a Google Site</h2>
@@ -315,17 +468,19 @@
         <h2><i class="fas fa-text-width"></i> Blank Space Character</h2>
         <p>Use this special character (U+2800) for formatting needs:</p>
         <div class="rounded-container">⠀</div>
-        <button class="btn btn-blue" onclick="copyBlankSpace()">
+        <button class="btn btn-green" onclick="copyBlankSpace()">
           <i class="far fa-copy"></i> Copy to Clipboard
         </button>
       </div>
+    </div>
 
-      <!-- Code Snippet Card -->
-      <div class="card">
-        <h2><i class="fas fa-code"></i> Implementation Code</h2>
-        <p>Use this code in your Google Site to run the GSRP:</p>
-        <div class="code-container">
-          <code>&lt;!DOCTYPE html&gt;
+    <!-- Expanded Code Section -->
+    <div class="code-section">
+      <h2><i class="fas fa-code"></i> Implementation Code</h2>
+      <p>Use this code in your Google Site to run the GSRP:</p>
+      
+      <div class="code-container">
+        <code>&lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
@@ -341,7 +496,7 @@
       baseUrl: 'http://127.0.0.1:8080',
       sourceUrl: 'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/gsrp_folder/GSRP.html',
       placeholder: '#REPLACE_WITH_BASE_URL#',
-      loadingTimeout: 600000
+      loadingTimeout: 600000 // 60 seconds
     };
 
     async function loadGSRP() {
@@ -400,27 +555,28 @@
   &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code>
-        </div>
-        <button class="btn btn-pink" onclick="copyCodeSnippet()">
-          <i class="far fa-copy"></i> Copy Code
-        </button>
       </div>
+      
+      <button class="btn btn-pink" onclick="copyCodeSnippet()" style="margin-top: 25px;">
+        <i class="far fa-copy"></i> Copy Code to Clipboard
+      </button>
     </div>
 
     <div class="instructions">
-      <h3><i class="fas fa-info-circle"></i> How to Use This Tool</h3>
+      <h3><i class="fas fa-info-circle"></i> How to Implement Your GSRP</h3>
       <ol>
-        <li>Create a new Google Site using the first button</li>
-        <li>Generate a unique identifier with the string generator</li>
-        <li>Copy the blank space character if needed for formatting</li>
-        <li>Use the provided code in your Google Site HTML editor</li>
-        <li>Replace the placeholder values with your actual configuration</li>
-        <li>Publish your site to make your GSRP live</li>
+        <li><strong>Create a Google Site</strong> using the button above</li>
+        <li><strong>Generate a unique ID</strong> with the string generator and save it</li>
+        <li><strong>Copy the implementation code</strong> using the button above</li>
+        <li>In your Google Site, go to <strong>Insert → Embed → Embed code</strong></li>
+        <li><strong>Paste the code</strong> and adjust the CONFIG settings as needed</li>
+        <li>Use the <strong>blank space character</strong> if you need invisible formatting</li>
+        <li><strong>Publish your site</strong> to make your GSRP live</li>
       </ol>
     </div>
 
     <footer>
-      <p>GSRP Creation Toolkit v2.0 | &copy; 2023 All Rights Reserved</p>
+      <p>GSRP Creation Toolkit v2.1 | &copy; 2023 All Rights Reserved</p>
     </footer>
   </div>
 
@@ -478,9 +634,13 @@
       notice.textContent = message;
       notice.style.color = color;
       notice.style.display = 'block';
+      notice.style.opacity = '1';
       
       setTimeout(() => {
-        notice.style.display = 'none';
+        notice.style.opacity = '0';
+        setTimeout(() => {
+          notice.style.display = 'none';
+        }, 300);
       }, 2000);
     }
 
