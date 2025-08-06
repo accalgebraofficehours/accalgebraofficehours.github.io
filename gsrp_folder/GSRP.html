@@ -999,11 +999,6 @@
                           }
                         }
 
-
-
-
-
-
                               generateSessionBtn.addEventListener('click', async () => {
                           try {
                             // Disable button only during loading
@@ -1012,7 +1007,8 @@
 
                             // Generate session ID with proper fallback
                             const sessionId = await generateSessionId();
-                            
+                            sessionInput.value = sessionId;
+
                             // Check if we got an error message
                             if (sessionId.startsWith("Can't fetch")) {
                               sessionError.textContent = sessionId;
