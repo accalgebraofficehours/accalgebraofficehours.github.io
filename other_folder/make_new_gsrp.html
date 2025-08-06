@@ -1,7 +1,50 @@
-<html>
-<button onclick="window.open('https://sites.google.com/new', '_blank')">
-  Create Blank Google Site
-</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Google Site Button</title>
+  <style>
+    .btn {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+    }
+
+    .btn:hover .btn-slide-show-text1 {
+      margin-left: 65px;
+    }
+
+    .btn-moving-gradient {
+      height: 55px;
+      width: 200px;
+      font-size: 16px;
+      font-weight: 600;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      border: none;
+      background-size: 300% 100%;
+      border-radius: 50px;
+    }
+
+    .btn-moving-gradient:hover {
+      transition: 0.5s ease-in-out;
+      background-position: 100% 0px;
+    }
+
+    .btn-moving-gradient--blue {
+      background-image: linear-gradient(90deg, rgb(61, 135, 255), rgb(190, 61, 255), rgb(126, 61, 255), rgb(58, 134, 255));
+      box-shadow: rgb(190, 61, 255) 0px 4px 15px 0px;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="btn btn-moving-gradient btn-moving-gradient--blue" onclick="window.open('https://sites.google.com/new', '_blank')">
+    Create Google Site
+  </button>
+
+</body>
+
+
 
 
 
