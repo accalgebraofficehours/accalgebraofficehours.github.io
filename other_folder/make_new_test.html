@@ -1,36 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+
+<br>
+<h1>
+Create a new GSRP!
+</h1>
+<br>
+
+  
 <head>
+<body>
   <meta charset="UTF-8">
   <title>Create new GSRP</title>
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/images_folder/gsrp_maker_favicon.png">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/refs/heads/main/images_folder/gsrp_maker_favicon.png">
   <style>
     .btn {
       font-family: Arial, Helvetica, sans-serif;
       text-transform: uppercase;
     }
+
     .btn:hover .btn-slide-show-text1 {
       margin-left: 65px;
     }
+
     .btn-moving-gradient {
       height: 55px;
       width: 200px;
       font-size: 16px;
       font-weight: 600;
-      color: white;
+      color: rgb(255, 255, 255);
       cursor: pointer;
       border: none;
       background-size: 300% 100%;
       border-radius: 50px;
     }
+
     .btn-moving-gradient:hover {
       transition: 0.5s ease-in-out;
       background-position: 100% 0px;
     }
+
     .btn-moving-gradient--blue {
       background-image: linear-gradient(90deg, rgb(61, 135, 255), rgb(190, 61, 255), rgb(126, 61, 255), rgb(58, 134, 255));
       box-shadow: rgb(190, 61, 255) 0px 4px 15px 0px;
     }
+  </style>
+  <h2>
+  Create a Google Site
+  </h2>
+
+
+
+  <button class="btn btn-moving-gradient btn-moving-gradient--blue" onclick="window.open('https://sites.google.com/new', '_blank')">
+    Create Google Site
+  </button>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <meta charset="UTF-8">
+  <title>Auto-Copy String Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+
+    .btn {
+      font-family: Arial, Helvetica, sans-serif;
+      text-transform: uppercase;
+    }
+
+    .btn:hover .btn-slide-show-text1 {
+      margin-left: 65px;
+    }
+
+    .btn-moving-gradient {
+      height: 55px;
+      width: 200px;
+      font-size: 16px;
+      font-weight: 600;
+      color: rgb(255, 255, 255);
+      cursor: pointer;
+      border: none;
+      background-size: 300% 100%;
+      border-radius: 50px;
+    }
+
+    .btn-moving-gradient:hover {
+      transition: 0.5s ease-in-out;
+      background-position: 100% 0px;
+    }
+
     .btn-moving-gradient--pink {
       background-image: linear-gradient(
         90deg,
@@ -41,31 +118,7 @@
       );
       box-shadow: rgb(255, 123, 97) 0px 4px 15px 0px;
     }
-    .rounded-container {
-      width: 300px;
-      padding: 20px;
-      margin: 50px auto;
-      background-color: transparent;
-      border: 4px solid #000;
-      border-radius: 15px;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-    .rounded-container1 {
-      width: 90%;
-      max-width: 800px;
-      padding: 20px;
-      margin: 50px auto;
-      background-color: transparent;
-      border: 4px solid #000;
-      border-radius: 15px;
-      font-family: monospace;
-      white-space: pre-wrap;
-      overflow-x: auto;
-      color: #333;
-      font-size: 14px;
-      text-align: left;
-    }
+
     #generatedString {
       margin-top: 20px;
       font-size: 18px;
@@ -73,6 +126,7 @@
       width: 420px;
       text-align: center;
     }
+
     #copyNotice {
       color: green;
       font-size: 14px;
@@ -123,37 +177,171 @@
 
     window.onload = generateInitialString;
   </script>
-</head>
-<body>
-  <h1>Create a new GSRP!</h1>
-  <h2>Create a Google Site</h2>
-  <button class="btn btn-moving-gradient btn-moving-gradient--blue" onclick="window.open('https://sites.google.com/new', '_blank')">
-    Create Google Site
-  </button>
+
 
   <h2>Random String Generator</h2>
-  <button class="btn btn-moving-gradient btn-moving-gradient--pink" onclick="regenerateAndCopy()">Regenerate</button><br>
+
+  <button class="btn btn-moving-gradient btn-moving-gradient--pink" onclick="regenerateAndCopy()">
+    Regenerate
+  </button><br>
+
   <input type="text" id="generatedString" readonly>
   <div id="copyNotice">Copied to clipboard!</div>
 
-  <h2>Blank space character (U+2800)</h2>
+
+
+
+
+
+
+
+
+
+  
+  
+
+  <meta charset="UTF-8">
+  <title>Rounded Container</title>
+  <style>
+    .rounded-container {
+      width: 300px;
+      padding: 20px;
+      margin: 50px auto;
+      background-color: transparent;        /* No background */
+      border: 4px solid #000000;            /* Outline (same as old background) */
+      border-radius: 15px;                  /* Rounded corners */
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+  </style>
+  <h2>
+  Blank space character (U+2800)
+  </h2>
+
+
+
   <div class="rounded-container">
+    
     <p>⠀</p>
   </div>
 
-  <h2>Code</h2>
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+
+
+  <meta charset="UTF-8" />
+  <title>Code Display in Rounded Container</title>
+  <style>
+    .rounded-container1 {
+      width: 90%;
+      max-width: 800px;
+      padding: 20px;
+      margin: 50px auto;
+      background-color: transparent;
+      border: 4px solid #000000;
+      border-radius: 15px;
+      font-family: monospace, monospace;
+      white-space: pre-wrap; /* allow line breaks */
+      overflow-x: auto; /* horizontal scroll if needed */
+      color: #333;
+      font-size: 14px;
+      text-align: left;
+    }
+  </style>
+  <h2>
+  Code
+  </h2>
+
+
+
   <div class="rounded-container1">
 &lt;!DOCTYPE html&gt;
 &lt;html lang="en"&gt;
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
   &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-  &lt;title&gt;Run In Google Sites Pls&lt;/title&gt;
+  &lt;title&gt;Run In Google Sites Pls you dipshit&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
   Loading...
+
+  &lt;script&gt;
+    // Configuration
+    const CONFIG = {
+      baseUrl: 'http://127.0.0.1:8080',
+      sourceUrl: 'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/gsrp_folder/GSRP.html',
+      placeholder: '#REPLACE_WITH_BASE_URL#',
+      loadingTimeout: 600000 // 60 seconds or 600000 milliseconds or 1 minute or 1/60th of an hour or 1/1440th of a day or 1/525960th of a year or  1/7255200000000th of the universes existance
+    };
+
+    async function loadGSRP() {
+      const container = document.getElementById('gsrp-container');
+      
+      try {
+        // Add timeout to prevent hanging
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), CONFIG.loadingTimeout);
+        
+        const response = await fetch(CONFIG.sourceUrl, {
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        let html = await response.text();
+        
+        // Replace base URL placeholder
+        html = html.replace(new RegExp(CONFIG.placeholder, 'g'), CONFIG.baseUrl);
+        
+        // Replace the entire document
+        document.open();
+        document.write(html);
+        document.close();
+        
+      } catch (error) {
+        console.error('Failed to load GSRP:', error);
+        
+        let errorMessage = 'Failed to load GSRP.';
+        if (error.name === 'AbortError') {
+          errorMessage = 'Loading timed out. Please try again.';
+        } else if (error.message.includes('HTTP')) {
+          errorMessage = `Server error: ${error.message}`;
+        } else if (error.message.includes('fetch')) {
+          errorMessage = 'Network error. Please check your connection.';
+        }
+        
+        container.innerHTML = `
+          &lt;div class="error-message"&gt;${errorMessage}&lt;/div&gt;
+          &lt;button onclick="location.reload()"&gt;Retry&lt;/button&gt;
+        `;
+      }
+    }
+
+    // Start loading when page is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadGSRP);
+    } else {
+      loadGSRP();
+    }
+  &lt;/script&gt;
 &lt;/body&gt;
 &lt;/html&gt;
   </div>
+
 </body>
+</head>
 </html>
