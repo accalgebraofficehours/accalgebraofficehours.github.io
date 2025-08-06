@@ -837,30 +837,6 @@
                               let predefinedSessions = [];
                               let baseUrlVisible = false;
 
-                              // Function to fetch predefined sessions
-                              function fetchPredefinedSessions() {
-                                return fetch('https://accalgebraofficehours.github.io/other_folder/PREDEFINED_SESSIONS.json')
-                                  .then(res => {
-                                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                                    return res.json();
-                                  })
-                                  .then(data => {
-                                    if (!Array.isArray(data)) {
-                                      throw new Error('Fetched data is not an array');
-                                    }
-                                    predefinedSessions = data;
-                                    console.log('Successfully fetched sessions:', predefinedSessions);
-                                    return true;
-                                  })
-                                  .catch(err => {
-                                    console.error('Fetch error:', err);
-                                    // Fallback to default sessions
-                                    predefinedSessions = [
-                                      'If this is appearing in your session ID, it seems that my github pages site is down. Contact sam.poodleschool.founder@gmail.com to report/fix the issue.    However, if this is appearing in your saved sessions or session history, you arent visiting this on Google Sites (its intended use), and you may need to clear your cookies.'
-                                    ];
-                                    return false;
-                                  });
-                              }
 
                               // Function to add predefined sessions
                               function addPredefinedSessions() {
@@ -914,12 +890,6 @@
                                 return addedNew;
                               }
 
-                              // Function to fetch and update predefined sessions
-                              function fetchAndUpdatePredefinedSessions() {
-                                return fetchPredefinedSessions().then(() => {
-                                  return addPredefinedSessions();
-                                });
-                              }
 
                               // Initialize from localStorage
                               function initFromStorage() {
@@ -939,18 +909,14 @@
                               }
 
                               function showSessionHistory() {
-                            fetchAndUpdatePredefinedSessions().then(() => {
                                 sessionHistoryVisible = true;
                                 sessionHistory.style.display = 'block';
                                 toggleSessionHistory.innerHTML = '<i class="fas fa-times"></i> Hide Session History';
                                 renderSessions();
-                            });
                         }
 
                               // Toggle session history visibility
                               toggleSessionHistory.addEventListener('click', () => {
-                                // Fetch and update predefined sessions, then proceed
-                                fetchAndUpdatePredefinedSessions().then(addedNew => {
                                   sessionHistoryVisible = !sessionHistoryVisible;
                                   sessionHistory.style.display = sessionHistoryVisible ? 'block' : 'none';
                                   toggleSessionHistory.innerHTML = sessionHistoryVisible ?
@@ -963,7 +929,6 @@
                                       sessionsList.scrollTop = 0;
                                     }
                                   }
-                                });
                               });
 
                               // Generate random session ID
@@ -981,9 +946,6 @@
                               return predefinedSessions[randomIndex];
                             }
 
-                            // If no sessions available, try to fetch predefined sessions
-                            console.log('No sessions available, fetching predefined sessions...');
-                            await fetchPredefinedSessions();
 
                             // If we got sessions from fetch, return a random one
                             if (predefinedSessions.length > 0) {
@@ -1000,7 +962,9 @@
                         }
 
                               async function fetchNewSessionId() {
-                                const session_url = 'http://localhost:8080/newsession'
+                                // const session_url = 'http://localhost:8080/newsession'
+                                const session_url = `${document.getElementById('baseUrl').value}/newsession`
+                                console.log('yo heres the url:' + session_url)
                                 return fetch(session_url)
                                   .then(res => {
                                     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
