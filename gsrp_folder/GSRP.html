@@ -648,8 +648,7 @@
                                 id="generateSessionBtn"
                                 class="btn"
                             >
-                                <i class="fas fa-random"></i> Grab Random
-                                Session
+                                <i class="fas fa-random"></i> Generate Session ID
                             </button>
                             <button
                                 type="button"
@@ -1004,14 +1003,14 @@
                               sessionError.style.display = 'block';
 
                               // Revert button immediately on error
-                              generateSessionBtn.innerHTML = '<i class="fas fa-random"></i> Grab Random Session';
+                              generateSessionBtn.innerHTML = '<i class="fas fa-random"></i> Generate Session ID';
                               generateSessionBtn.disabled = false;
                             } else {
                               // Clear any previous error
                               sessionError.style.display = 'none';
 
                               // Update button text to indicate success (without disabling)
-                              generateSessionBtn.innerHTML = '<i class="fas fa-check-circle"></i> Grab Random Session';
+                              generateSessionBtn.innerHTML = '<i class="fas fa-check-circle"></i> Generate Session ID';
                               generateSessionBtn.disabled = false; // Keep button enabled
 
                               // Automatically show session history
@@ -1019,7 +1018,7 @@
 
                               // Revert text after .2 seconds
                               setTimeout(() => {
-                                generateSessionBtn.innerHTML = '<i class="fas fa-random"></i> Grab Random Session';
+                                generateSessionBtn.innerHTML = '<i class="fas fa-random"></i> Generate Session ID';
                               }, 750);
                             }
                           } catch (error) {
