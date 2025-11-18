@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pooxie Watch</title>
+  <script>
+    // Block all attempts to open popups (windows/tabs)
+// Place this code as early as possible (top of <head>)
+(function() {
+  // 1. Completely disable window.open
+  window.open = function() { return null; };
+
+  // 2. Disable deprecated showModalDialog (rare, but safe)
+  window.showModalDialog = function() { return null; };
+
+  // 3. Block anchor tags with target="_blank" on click
+  document.addEventListener('click', function(e) {
+    let el = e.target;
+    // Traverse up in case a child element inside <a> was clicked
+    while (el && el.tagName !== 'A') el = el.parentElement;
+    if (el && el.tagName === 'A' && el.target === '_blank') {
+      e.preventDefault();
+      // Optionally, navigate in the same tab:
+      window.location = el.href;
+    }
+  }, true);
+
+  // 4. Block attempts using window.location.assign/new window.location
+  const assign = window.location.assign;
+  window.location.assign = function(url) {
+    if (window !== window.top) {
+      // Prevent frame busting
+      return;
+    }
+    assign.call(window.location, url);
+  };
+
+  // 5. Block setTimeout/setInterval that try to open popups
+  const originalSetTimeout = window.setTimeout;
+  window.setTimeout = function(fn, delay, ...args) {
+    if (typeof fn === "string" && fn.includes("window.open")) return;
+    return originalSetTimeout(fn, delay, ...args);
+  };
+  const originalSetInterval = window.setInterval;
+  window.setInterval = function(fn, delay, ...args) {
+    if (typeof fn === "string" && fn.includes("window.open")) return;
+    return originalSetInterval(fn, delay, ...args);
+  };
+
+  // 6. Block programmatic creation of <a target="_blank">
+  const origCreateElement = document.createElement;
+  document.createElement = function(tagName, ...args) {
+    const el = origCreateElement.call(document, tagName, ...args);
+    if (tagName.toLowerCase() === 'a') {
+      Object.defineProperty(el, 'target', {
+        set: function() {},
+        get: function() { return ''; }
+      });
+    }
+    return el;
+  };
+})();
+  </script>
+  <script>
+// ONE-LINE POPUP KILLER
+window.open = function() { return { closed: true, focus: function(){}, close: function(){} }; };
+</script>
+  <script>
+// COMPLETE TAB/POPUP DESTROYER
+(() => {
+  // 1. Block window.open globally
+  window.open = function() {
+    console.log("[Pooxie] Blocked new tab attempt");
+    return { closed: true, focus: () => {}, close: () => {} }; // Return fake window
+  };
+
+  // 2. Hijack all link clicks
+  document.addEventListener('click', (e) => {
+    for (let el = e.target; el; el = el.parentElement) {
+      if (el.tagName === 'A' && el.target === '_blank') {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        el.style.outline = '2px solid red';
+        setTimeout(() => el.style.outline = '', 2000);
+        console.log("[Pooxie] Blocked new tab from link");
+        return;
+      }
+    }
+  }, true);
+
+  // 3. Block keyboard shortcuts (Ctrl+Click, Middle-click)
+  document.addEventListener('auxclick', (e) => {
+    if (e.button === 1) e.preventDefault(); // Middle mouse button
+  }, true);
+
+  // 4. Block all iframes that could spawn popups
+
+  console.log("[Pooxie] Tab blocker activated");
+})();
+</script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #0f0c29, #302b63, #24243e);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      color: white;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .bubble {
+      position: absolute;
+      bottom: -100px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: rise 15s linear infinite;
+    }
+
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120vh) scale(0.5);
+        opacity: 0;
+      }
+    }
+
+    .bubble:nth-child(odd) {
+      width: 15px;
+      height: 15px;
+      animation-duration: 12s;
+      left: 10%;
+    }
+
+    .bubble:nth-child(even) {
+      width: 25px;
+      height: 25px;
+      animation-duration: 18s;
+      left: 80%;
+    }
+
+    .container {
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(255, 102, 204, 0.2);
+      padding: 30px;
+      max-width: 500px;
+      margin: 80px auto;
+      text-align: left;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    h1, p {
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      height: 44px;
+      box-sizing: border-box;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      appearance: none;
+    }
+
+    input::placeholder {
+      color: #bbb;
+    }
+
+    button {
+      background-color: #ff66cc;
+      border: none;
+      padding: 12px 16px;
+      margin-top: 25px;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      font-size: 16px;
+      box-shadow: 0 0 20px rgba(255, 102, 204, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ff85d8;
+      transform: scale(1.03);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .player {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+    }
+
+    .player iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+    .player embed {
+      flex: 1;
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+
+    .bubbles-container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="bubbles-container">
+    <div class="bubble" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="bubble" style="left: 25%; animation-delay: 2s;"></div>
+    <div class="bubble" style="left: 40%; animation-delay: 4s;"></div>
+    <div class="bubble" style="left: 55%; animation-delay: 6s;"></div>
+    <div class="bubble" style="left: 70%; animation-delay: 8s;"></div>
+    <div class="bubble" style="left: 85%; animation-delay: 10s;"></div>
+  </div>
+
+  <div class="container" id="input-section">
+    <h1>🌊 Pooxie Watch</h1>
+    <p>Movies, TV, Free Forever</p>
+    <p><b>Do not click on any links opened in the video player.</b></p>
+    <p>Videos are hosted by MoviesAPI and all DMCA actions should be processed through them</p>
+    <p>We do not host any material, and therefore have no control over it</p>
+    <form id="form">
+      <label for="tmdbId">TMDB ID:</label>
+      <input type="text" id="tmdbId" placeholder="e.g. 550" required />
+
+      <label for="type">Type:</label>
+      <select id="type">
+        <option value="movie">Movie</option>
+        <option value="tv">TV Show</option>
+      </select>
+
+      <div id="tvInputs" class="hidden">
+        <label for="season">Season:</label>
+        <input type="number" id="season" min="1" value="1" />
+
+        <label for="episode">Episode:</label>
+        <input type="number" id="episode" min="1" value="1" />
+      </div>
+
+      <button type="submit">🎬 Watch Now</button>
+    </form>
+  </div>
+
+  <div id="player" class="player">
+    <iframe id="iframe" allowFullScreen> </iframe>
+  </div>
+
+  <script>
+    const form = document.getElementById('form');
+    const typeSelect = document.getElementById('type');
+    const tvInputs = document.getElementById('tvInputs');
+    const player = document.getElementById('player');
+    const iframe = document.getElementById('iframe');
+    const inputSection = document.getElementById('input-section');
+
+    typeSelect.addEventListener('change', () => {
+      tvInputs.classList.toggle('hidden', typeSelect.value !== 'tv');
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('tmdbId').value.trim();
+      const type = typeSelect.value;
+      const season = document.getElementById('season').value || 1;
+      const episode = document.getElementById('episode').value || 1;
+      launchPlayer(type, id, season, episode);
+    });
+
+    function launchPlayer(type, id, season = 1, episode = 1) {
+      let url = '';
+      if (type === 'movie') {
+        url = `https://moviesapi.club/movie/${id}`;
+      } else {
+        url = `https://moviesapi.club/tv/${id}-${season}-${episode}`;
+      }
+
+      iframe.src = url;
+      player.style.display = 'flex';
+      inputSection.style.display = 'none';
+    }
+
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        type: params.get('type'),
+        id: params.get('id'),
+        season: params.get('season') || 1,
+        episode: params.get('episode') || 1
+      };
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const { type, id, season, episode } = getQueryParams();
+
+      if (type && id) {
+        document.getElementById('tmdbId').value = id;
+        document.getElementById('type').value = type;
+        if (type === 'tv') {
+          tvInputs.classList.remove('hidden');
+          document.getElementById('season').value = season;
+          document.getElementById('episode').value = episode;
+        }
+        launchPlayer(type, id, season, episode);
+      }
+    });
+  </script>
+</body>
+</html>
