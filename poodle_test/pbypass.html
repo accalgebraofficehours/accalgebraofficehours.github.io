@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V3</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    #formArea {
+      padding: 20px;
+      background: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    #viewer {
+      width: 100%;
+      height: 100%;
+      display: none; /* hidden until URL loads */
+    }
+
+    embed {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="formArea">
+    <h2>Poodle Bypass V3</h2>
+    <input id="urlInput" type="text" placeholder="Search or enter a URL" style="width: 70%;">
+    <button onclick="loadFullscreen()">Load</button>
+  </div>
+
+  <div id="viewer"></div>
+
+  <script>
+    function loadFullscreen() {
+      const url = document.getElementById("urlInput").value.trim();
+      const viewer = document.getElementById("viewer");
+      const formArea = document.getElementById("formArea");
+
+      if (!url) {
+        alert("Please enter a URL.");
+        return;
+      }
+
+      // Remove the form so embed can take up the whole page
+      formArea.style.display = "none";
+
+      // Show viewer area
+      viewer.style.display = "block";
+
+      // Load fullscreen embed
+      viewer.innerHTML = `<embed src="${url}" type="text/html">`;
+    }
+  </script>
+
+</body>
+</html>
