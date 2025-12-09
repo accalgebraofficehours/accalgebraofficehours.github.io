@@ -4,7 +4,7 @@
 </head>
 <body>
 
-  <h2>Poodle Panel V2</h2>
+  <h1>Poodle Panel V2</h1>
 
 
 
@@ -141,9 +141,40 @@
 	
     </div>
     </div>
-
+    <br>
+    <br>
 
   
+
+<button style="width: 800px; height: 50px; font-size: 20px;"id="openLoader">Open Bypass</button>
+
+<script>
+document.getElementById("openLoader").onclick = () => {
+    // open a new window IMMEDIATELY so popup blockers don't kill it
+    const win = window.open("", "_blank");
+
+    // write a temporary loading message
+    win.document.write("Loading...");
+
+    // START FETCH
+    fetch("https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/pbypass.html")
+      .then(r => r.text())
+      .then(html => {
+        win.document.open();
+        win.document.write(html);
+        win.document.close();
+      })
+      .catch(err => {
+        win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
+      });
+};
+</script>
+
+
+
+
+
+
   
 </body>
 </html>
