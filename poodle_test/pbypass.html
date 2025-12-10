@@ -39,6 +39,7 @@
     <h2>Poodle Bypass V3</h2>
     <input id="urlInput" type="text" placeholder="Enter a URL" style="width: 70%;">
     <button onclick="loadFullscreen()">Load</button>
+    <button onclick="loadExample()">Paste Pooxie Services</button>
   </div>
 
   <div id="viewer"></div>
@@ -63,6 +64,11 @@
       // Load fullscreen embed
       viewer.innerHTML = `<embed src="${url}" type="text/html">`;
     }
+
+    function loadExample() {
+      document.getElementById("urlInput").value = "https://poooxie-2-0-y5c1.vercel.app/";
+    }
+
   </script>
 
 </body>
