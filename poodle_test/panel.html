@@ -136,9 +136,10 @@
       </div>
       <br>
       <br>
-      <button style="width: 800px; height: 50px; font-size: 20px;"id="openLoader">Open Bypass</button>
+      <button style="width: 800px; height: 50px; font-size: 20px;"id="bypassV3">Open Bypass V3</button>
+      <button style="width: 800px; height: 50px; font-size: 20px;"id="bypassV4">Open Bypass V4</button>
       <script>
-         document.getElementById("openLoader").onclick = () => {
+         document.getElementById("bypassV3").onclick = () => {
              // open a new window IMMEDIATELY so popup blockers don't kill it
              const win = window.open("", "_blank");
          
@@ -157,6 +158,27 @@
                  win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
                });
          };
+         document.getElementById("bypassV4").onclick = () => {
+             // open a new window IMMEDIATELY so popup blockers don't kill it
+             const win = window.open("", "_blank");
+         
+             // write a temporary loading message
+             win.document.write("Loading...");
+         
+             // START FETCH
+             fetch("https://raw.githubusercontent.com/accalgebraofficehours/poodle-bypass-v4/main/outer-wall.html")
+               .then(r => r.text())
+               .then(html => {
+                 win.document.open();
+                 win.document.write(html);
+                 win.document.close();
+               })
+               .catch(err => {
+                 win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
+               });
+         };
+   
+         
       </script>
    </body>
 </html>
