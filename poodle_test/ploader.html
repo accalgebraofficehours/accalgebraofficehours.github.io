@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beta</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
+    #formArea {
+      padding: 20px;
+      background: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    #viewer {
+      width: 100%;
+      height: 100%;
+      display: none; /* hidden until URL loads */
+    }
+
+    embed {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="formArea">
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2>Poodle Loader Beta</h2>
+    <br>Right now this is just Poodle Bypass V3, but it will get updated to use a Pr0ksy soon.
+    <input id="urlInput" type="text" placeholder="Enter a URL" style="width: 70%;">
+    <button onclick="loadFullscreen()">Load</button>
+    <button onclick="loadExample()">Paste Pooxie Services</button>
+  </div>
+
+  <div id="viewer"></div>
+
+  <script>
+    function loadFullscreen() {
+      const url = document.getElementById("urlInput").value.trim();
+      const viewer = document.getElementById("viewer");
+      const formArea = document.getElementById("formArea");
+
+      if (!url) {
+        alert("Please enter a URL.");
+        return;
+      }
+
+      // Remove the form so embed can take up the whole page
+      formArea.style.display = "none";
+
+      // Show viewer area
+      viewer.style.display = "block";
+
+      // Load fullscreen embed
+      viewer.innerHTML = `<embed src="${url}" type="text/html">`;
+    }
+
+    function loadExample() {
+      document.getElementById("urlInput").value = "https://poooxie.vercel.app/";
+    }
+
+  </script>
+
+</body>
+</html>
