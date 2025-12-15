@@ -131,50 +131,75 @@
       </div>
       </div>
       <br><br>
-      <button style="width: 800px; height: 50px; font-size: 20px;"id="bypassV4">Open Bypass V4</button>
+      <button style="width: 800px; height: 50px; font-size: 20px;" id="ploader">
+        Poodle Loader V1
+      </button>
       <br><br>
-      <button style="width: 800px; height: 50px; font-size: 20px;"id="bypassV3">Open Bypass V3 (very buggy and extremely unrecommended)</button>
+      <button style="width: 800px; height: 50px; font-size: 20px;" id="pbyV3">
+        Poodle Bypass V3
+      </button>
+      <br><br>
+      <button style="width: 800px; height: 50px; font-size: 20px;" id="sandstone">
+        Sandstone V0.20
+      </button>
+      <br><br>
+      <button style="width: 400px; height: 50px; font-size: 20px;" id="ajax">
+        SpeedShulker
+      </button>
+      <button style="width: 400px; height: 50px; font-size: 20px;" id="objectiv">
+        SpeedShulker Objectiv
+      </button>
+      
       <script>
-         document.getElementById("bypassV3").onclick = () => {
-             // open a new window IMMEDIATELY so popup blockers don't kill it
-             const win = window.open("", "_blank");
-         
-             // write a temporary loading message
-             win.document.write("Loading...");
-         
-             // START FETCH
-             fetch("https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/pbypass.html")
-               .then(r => r.text())
-               .then(html => {
-                 win.document.open();
-                 win.document.write(html);
-                 win.document.close();
-               })
-               .catch(err => {
-                 win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
-               });
-         };
-         document.getElementById("bypassV4").onclick = () => {
-             // open a new window IMMEDIATELY so popup blockers don't kill it
-             const win = window.open("", "_blank");
-         
-             // write a temporary loading message
-             win.document.write("Loading...");
-         
-             // START FETCH
-             fetch("https://raw.githubusercontent.com/accalgebraofficehours/poodle-bypass-v4/main/outer-wall.html")
-               .then(r => r.text())
-               .then(html => {
-                 win.document.open();
-                 win.document.write(html);
-                 win.document.close();
-               })
-               .catch(err => {
-                 win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
-               });
-         };
-   
-         
+        function openBypass(url) {
+          // open a new window IMMEDIATELY so popup blockers don't kill it
+          const win = window.open("", "_blank");
+
+          // temporary loading message
+          win.document.write("Loading...");
+
+          // fetch and inject HTML
+          fetch(url)
+            .then(r => r.text())
+            .then(html => {
+              win.document.open();
+              win.document.write(html);
+              win.document.close();
+            })
+            .catch(err => {
+              win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
+            });
+        }
+
+        document.getElementById("ploader").onclick = () => {
+          openBypass(
+            "https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/pbypass.html"
+          );
+        };
+
+        document.getElementById("pbyV3").onclick = () => {
+          openBypass(
+            "https://raw.githubusercontent.com/accalgebraofficehours/poodle-bypass-v4/main/outer-wall.html"
+          );
+        };
+        
+        document.getElementById("sandstone").onclick = () => {
+          openBypass(
+            "https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/pbypass.html"
+          );
+        };
+
+        document.getElementById("ajax").onclick = () => {
+          openBypass(
+            "https://raw.githubusercontent.com/accalgebraofficehours/poodle-bypass-v4/main/outer-wall.html"
+          );
+        };
+        
+        document.getElementById("objectiv").onclick = () => {
+          openBypass(
+            "https://raw.githubusercontent.com/accalgebraofficehours/poodle-bypass-v4/main/outer-wall.html"
+          );
+        };
       </script>
    </body>
 </html>
