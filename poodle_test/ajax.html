@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+    }
+    .topbar {
+      display: flex;
+      padding: 10px;
+      background: #1a1a1a;
+      gap: 8px;
+    }
+    input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+      font-weight: bold;
+    }
+    button:hover { background: #1e4ed8; }
+
+    iframe {
+      width: 100%;
+      height: calc(100vh - 52px);
+      border: none;
+      background: #fff;
+    }
+
+    dialog {
+      border: none;
+      border-radius: 10px;
+      padding: 16px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    dialog input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <input id="url" type="text" value="about://home" />
+    <button onclick="loadPage()">Go!</button>
+    <button onclick="openCloakDialog()">Cloak</button>
+  </div>
+
+  <iframe id="viewer"></iframe>
+
+  <dialog id="cloakDialog">
+    <h3>Cloak Settings</h3>
+    <input id="cloakTitle" placeholder="Tab title" value="Home" />
+    <input id="cloakFavicon" placeholder="Favicon URL" value="https://ssl.gstatic.com/classroom/favicon.png" />
+    <button onclick="applyCloak()">Launch</button>
+    <button onclick="cloakDialog.close()">Cancel</button>
+  </dialog>
+
+  <script>
+    let lastHTML = '';
+
+    const titles = [
+      'Achieve The Impossible',
+      'Dive Deep Into The Web',
+      'Explore New Horizons',
+      'Unlock Your Potential',
+      'Embrace The Future',
+      'Innovate and Inspire',
+      'Discover Endless Possibilities',
+      'Transform Ideas Into Reality',
+      'Navigate The Digital World',
+      'Empower Your Journey'
+    ];
+
+    function randomTitle() {
+      return titles[Math.floor(Math.random() * titles.length)];
+    }
+
+    function renderHome() {
+      const title = randomTitle();
+      lastHTML = `<!DOCTYPE html>
+<html>
+<head>
+  <title>${title}</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #1a1a1a;
+    }
+    .home {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      background: #1a1a1a;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .home img {
+      width: 400px;
+      height: 300px;
+    }
+    .home h2 {
+      margin-top: 12px;
+      font-weight: normal;
+    }
+    .launch {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="home">
+    <img src="https://i.ibb.co/hRRVjmgc/ajaxlogo.png" alt="Logo">
+    <button class="launch" onclick="parent.navigateTo('https://poooxie.vercel.app/')">Launch Pooxie Services</button>
+  </div>
+</body>
+</html>`;
+
+      document.getElementById('viewer').srcdoc = lastHTML;
+    }
+
+    function navigateCurrent() {
+      const input = document.getElementById('url');
+      if (!input) return;
+      loadPage();
+    }
+
+    function navigateTo(url) {
+      const input = document.getElementById('url');
+      if (!input) return;
+      input.value = url;
+      loadPage();
+    }
+
+    async function loadPage() {
+      const url = document.getElementById('url').value.trim();
+
+      if (url === 'about://home') {
+        renderHome();
+        return;
+      }
+
+      if (!url) return;
+
+      try {
+        const res = await fetch(url);
+        const html = await res.text();
+        lastHTML = html;
+        document.getElementById('viewer').srcdoc = html;
+      } catch {
+        document.getElementById('viewer').srcdoc = '<br><br><br><br><br><br><br><center><img src="https://i.ibb.co/1GMzVRf8/server-error.png" width=500 height=300><h1 style="color:red">Failed to load page (check console)</h1><p>Make sure the URL is correct and the <b>server/site allows cross-origin requests.</b></p></center>';
+      }
+    }
+
+    function openCloakDialog() {
+      cloakDialog.showModal();
+    }
+
+    function applyCloak() {
+      const title = document.getElementById('cloakTitle').value || 'Home';
+      const favicon = document.getElementById('cloakFavicon').value;
+
+      const win = window.open('about:blank', '_blank');
+      if (!win) return;
+
+      // pull LIVE content from the iframe, not cached lastHTML
+      const frame = document.getElementById('viewer');
+      let html = lastHTML;
+      try {
+        if (frame.contentDocument) {
+          html = frame.contentDocument.documentElement.outerHTML;
+        }
+      } catch {}
+
+      win.document.open();
+      win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <title>${title}</title>
+</head>
+<body style="margin:0"></body>
+</html>`);
+      win.document.close();
+
+      // reliable favicon injection
+      const link = win.document.createElement('link');
+      link.rel = 'icon';
+      link.href = favicon;
+      win.document.head.appendChild(link);
+
+      win.document.documentElement.innerHTML = html;
+
+      // force cloaked title + favicon AFTER page content loads
+      try {
+        win.document.title = title;
+        const oldIcon = win.document.querySelector("link[rel~='icon']");
+        if (oldIcon) oldIcon.remove();
+        const forcedIcon = win.document.createElement('link');
+        forcedIcon.rel = 'icon';
+        forcedIcon.href = favicon;
+        win.document.head.appendChild(forcedIcon);
+      } catch {}
+      cloakDialog.close();
+    }
+    // }
+
+    renderHome();
+  </script>
+</body>
+</html>
