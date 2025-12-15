@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+    }
+    .topbar {
+      display: flex;
+      padding: 10px;
+      background: #1a1a1a;
+      gap: 8px;
+    }
+    input {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+    button {
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #2563eb;
+      color: #fff;
+      font-weight: bold;
+    }
+    button:hover { background: #1e4ed8; }
+
+    object {
+      width: 100%;
+      height: calc(100vh - 52px);
+      border: none;
+      background: #fff;
+    }
+
+    dialog {
+      border: none;
+      border-radius: 10px;
+      padding: 16px;
+      background: #1a1a1a;
+      color: #fff;
+    }
+
+    dialog input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <input id="url" type="text" value="about://home" />
+  <button onclick="loadPage()">Go!</button>
+  <button onclick="openCloakDialog()">Cloak</button>
+</div>
+
+<object id="viewer"></object>
+
+<dialog id="cloakDialog">
+  <h3>Cloak Settings</h3>
+  <input id="cloakTitle" placeholder="Tab title" value="Home" />
+  <input
+    id="cloakFavicon"
+    placeholder="Favicon URL"
+    value="https://ssl.gstatic.com/classroom/favicon.png"
+  />
+  <button onclick="applyCloak()">Launch</button>
+  <button onclick="cloakDialog.close()">Cancel</button>
+</dialog>
+
+<script>
+const viewer = document.getElementById("viewer");
+const urlInput = document.getElementById("url");
+const cloakDialog = document.getElementById("cloakDialog");
+const cloakTitle = document.getElementById("cloakTitle");
+const cloakFavicon = document.getElementById("cloakFavicon");
+
+let lastURL = "about://home";
+
+const titles = [
+  "Achieve The Impossible",
+  "Dive Deep Into The Web",
+  "Explore New Horizons",
+  "Unlock Your Potential",
+  "Embrace The Future",
+  "Innovate and Inspire",
+  "Discover Endless Possibilities",
+  "Transform Ideas Into Reality",
+  "Navigate The Digital World",
+  "Empower Your Journey"
+];
+
+function randomTitle() {
+  return titles[Math.floor(Math.random() * titles.length)];
+}
+
+function setObjectHTML(html) {
+  viewer.data = "data:text/html;base64," + btoa(unescape(encodeURIComponent(html)));
+}
+
+// --------------------- Home Page ---------------------
+function renderHome() {
+  const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${randomTitle()}</title>
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background: #1a1a1a;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    .home {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    img {
+      width: 400px;
+      height: 300px;
+    }
+    .launch {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      padding: 10px 14px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="home">
+    <img src="https://ibb.co/hJrk0Pzs" alt="Logo">
+    <button class="launch"
+      onclick="parent.postMessage({ type: 'navigate', url: 'https://poooxie.vercel.app/' }, '*')">
+      Launch Pooxie Services
+    </button>
+  </div>
+</body>
+</html>
+`;
+  setObjectHTML(html);
+  lastURL = "about://home";
+}
+
+// --------------------- Load External Page ---------------------
+async function loadPage() {
+  const url = urlInput.value.trim();
+  if (!url) return;
+
+  if (url === "about://home") {
+    renderHome();
+    return;
+  }
+
+  try {
+    // Try fetching the page via AJAX to detect errors
+    const res = await fetch(url, { method: "GET", mode: "cors" });
+    const html = await res.text();
+    setObjectHTML(html);
+    lastURL = url;
+  } catch (e) {
+    // Show custom error page
+    const errorHTML = `
+      <center>
+        <br><br><br>
+        <img src="https://i.ibb.co/1GMzVRf8/server-error.png" width=500 height=300>
+        <h1 style="color:red">Failed to load page</h1>
+        <p>Check the URL and ensure the server is accepting cross-origin requests</p>
+        <p>It's also possible the server has been Network/DNS blocked by your school or organization.</p>
+      </center>
+    `;
+    setObjectHTML(errorHTML);
+  }
+}
+
+// --------------------- Navigation & Cloak ---------------------
+function navigateTo(url) {
+  urlInput.value = url;
+  loadPage();
+}
+
+function openCloakDialog() {
+  cloakDialog.showModal();
+}
+
+function applyCloak() {
+  const title = cloakTitle.value || "Home";
+  const favicon = cloakFavicon.value;
+
+  const win = window.open("about:blank", "_blank");
+  if (!win) return;
+
+  win.document.write(`
+<!DOCTYPE html>
+<html>
+<head>
+  <title>${title}</title>
+  <link rel="icon" href="${favicon}">
+</head>
+<body style="margin:0">
+  <object style="width:100vw;height:100vh;border:none"
+    data="${viewer.data}">
+  </object>
+</body>
+</html>
+  `);
+  win.document.close();
+  cloakDialog.close();
+}
+
+// --------------------- PostMessage Bridge ---------------------
+window.addEventListener("message", e => {
+  if (e.data?.type === "navigate") {
+    navigateTo(e.data.url);
+  }
+});
+
+// --------------------- Initial Render ---------------------
+renderHome();
+</script>
+
+</body>
+</html>
