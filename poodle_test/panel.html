@@ -127,79 +127,105 @@
          <a href="https://poooxie.vercel.app/"><button class="btn btn-moving-gradient btn-moving-gradient--orange">Our Official Pr0ksy!</button></a>
          <a href="https://docs.google.com/document/d/1DBpBCgZV2m4aMmI9_F8TUj8lTuEIT0XXwWGjbMAl1jc/edit?usp=sharing"><button class="btn btn-moving-gradient btn-moving-gradient--green">Bypass Whitelist (FHS & HRZ K-8)</button></a>
          <a href="https://docs.google.com/document/d/1gNgr4Mhgqb6UyznlMO3nBj-ypNEDlRdKhFS79-MuSo0/edit?tab=t.0/"><button class="btn btn-moving-gradient btn-moving-gradient--pink">Kahoot/Blooket/Gimkit Cheats & Bots (WIP)</button></a>
-      
       </div>
       </div>
       <br><br>
-      <button style="width: 800px; height: 50px; font-size: 20px;" id="ploader">
-        Poodle Loader V1
+      <button style="width: 600px; height: 50px; font-size: 20px;"
+         onclick="openBypass('https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/ploader.html')">
+      Poodle Loader V1
+      </button>
+      <button style="width: 190px; height: 50px; font-size: 18px;"
+         onclick="downloadHTML(
+         'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/ploader.html',
+         'ploader.html'
+         )">
+      ⬇ Download
       </button>
       <br><br>
-      <button style="width: 800px; height: 50px; font-size: 20px;" id="pbyV3">
-        Poodle Bypass V3
+      <button style="width: 600px; height: 50px; font-size: 20px;"
+         onclick="openBypass('https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/pbypass.html')">
+      Poodle Bypass V3
+      </button>
+      <button style="width: 190px; height: 50px; font-size: 18px;"
+         onclick="downloadHTML(
+         'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/pbypass.html',
+         'pbypass.html'
+         )">
+      ⬇ Download
       </button>
       <br><br>
-      <button style="width: 800px; height: 50px; font-size: 20px;" id="sandstone">
-        Sandstone V0.20
+      <button style="width: 600px; height: 50px; font-size: 20px;"
+         onclick="openBypass('https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/sandstone.html')">
+      Sandstone V0.20
+      </button>
+      <button style="width: 190px; height: 50px; font-size: 18px;"
+         onclick="downloadHTML(
+         'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/sandstone.html',
+         'sandstone.html'
+         )">
+      ⬇ Download
       </button>
       <br><br>
-      <button style="width: 400px; height: 50px; font-size: 20px;" id="ajax">
-        SpeedShulker
+      <button style="width: 300px; height: 50px; font-size: 20px;"
+         onclick="openBypass('https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/ajax.html')">
+      SpeedShulker Ajax
       </button>
-      <button style="width: 400px; height: 50px; font-size: 20px;" id="objectiv">
-        SpeedShulker Objectiv
+      <button style="width: 95px; height: 50px; font-size: 18px;"
+         onclick="downloadHTML(
+         'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/ajax.html',
+         'ajax.html'
+         )">
+      ⬇ Download
       </button>
-      
+      <button style="width: 300px; height: 50px; font-size: 20px;"
+         onclick="openBypass('https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/objectiv.html')">
+      SpeedShulker Objectiv
+      </button>
+      <button style="width: 95px; height: 50px; font-size: 18px;"
+         onclick="downloadHTML(
+         'https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/objectiv.html',
+         'objectiv.html'
+         )">
+      ⬇ Download
+      </button>
       <script>
-        function openBypass(url) {
-          // open a new window IMMEDIATELY so popup blockers don't kill it
-          const win = window.open("", "_blank");
-
-          // temporary loading message
-          win.document.write("Loading...");
-
-          // fetch and inject HTML
-          fetch(url)
-            .then(r => r.text())
-            .then(html => {
-              win.document.open();
-              win.document.write(html);
-              win.document.close();
-            })
-            .catch(err => {
-              win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
-            });
-        }
-
-        document.getElementById("ploader").onclick = () => {
-          openBypass(
-            "https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/ploader.html"
-          );
-        };
-
-        document.getElementById("pbyV3").onclick = () => {
-          openBypass(
-            "https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/pbypass.html"
-          );
-        };
-        
-        document.getElementById("sandstone").onclick = () => {
-          openBypass(
-            "https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/sandstone.html"
-          );
-        };
-
-        document.getElementById("ajax").onclick = () => {
-          openBypass(
-            "https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/ajax.html"
-          );
-        };
-        
-        document.getElementById("objectiv").onclick = () => {
-          openBypass(
-            "https://raw.githubusercontent.com/accalgebraofficehours/accalgebraofficehours.github.io/main/poodle_test/objectiv.html"
-          );
-        };
+         function openBypass(url) {
+           // open a new window IMMEDIATELY so popup blockers don't kill it
+           const win = window.open("", "_blank");
+         
+           // temporary loading message
+           win.document.write("Loading...");
+         
+           // fetch and inject HTML
+           fetch(url)
+             .then(r => r.text())
+             .then(html => {
+               win.document.open();
+               win.document.write(html);
+               win.document.close();
+             })
+             .catch(err => {
+               win.document.body.innerHTML = `<h1>Error loading file</h1><p>${err}</p>`;
+             });
+         }
+         
+         function downloadHTML(url, filename) {
+             fetch(url)
+               .then(r => r.text())
+               .then(html => {
+                 const blob = new Blob([html], { type: "text/html" });
+                 const a = document.createElement("a");
+                 a.href = URL.createObjectURL(blob);
+                 a.download = filename;
+                 document.body.appendChild(a);
+                 a.click();
+                 document.body.removeChild(a);
+                 URL.revokeObjectURL(a.href);
+               })
+               .catch(err => alert("Download failed: " + err));
+         }
+         
+         
       </script>
    </body>
 </html>
