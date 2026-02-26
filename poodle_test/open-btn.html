@@ -1,0 +1,30 @@
+<button style="height: 50px; width: 100%; font-size: 20px" data-url="https://ominous-fortnight-979pqrp57qxr2vqx-6080.app.github.dev/vnc.html" onclick="openDynamicIframe(this)">
+Open Linux PC (Change OS manually)
+</button>
+
+<script>
+function openDynamicIframe(buttonElement) {
+    const targetUrl = buttonElement.getAttribute('data-url');
+    const newTab = window.open("", "_blank");
+
+    if (newTab) {
+        newTab.document.write(`
+            <html>
+                <head>
+                    <title>PoodleOpen Lite</title>
+                    <style>
+                        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+                        iframe { width: 100%; height: 100%; border: none; }
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${targetUrl}"></iframe>
+                </body>
+            </html>
+        `);
+        newTab.document.close();
+    } else {
+        alert("Popup blocked! Please allow popups for this site.");
+    }
+}
+</script>
