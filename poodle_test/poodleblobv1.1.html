@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Offline Site Packer</title>
+</head>
+<body>
+  <h1>God-Tier Offline Site Packer</h1>
+  <script>
+    // -------------------------
+    // Paste the full God-Tier Offline Site Packer code here
+    // -------------------------
+
+    async function godClone(entry){
+      const FS = new Map();
+      const queue = [entry];
+      const visited = new Set();
+      const abs = (base,p)=>new URL(p,base).href;
+
+      async function grab(url){
+        if(visited.has(url)) return;
+        visited.add(url);
+        try{
+          const res = await fetch(url);
+          const type = res.headers.get("content-type")||"";
+          let data;
+          if(type.includes("text") || type.includes("javascript") || type.includes("json")){
+            data = await res.text();
+          } else {
+            const blob = await res.blob();
+            data = await blob.arrayBuffer();
+          }
+          FS.set(url,{type,data});
+          if(type.includes("html")){
+            const doc = new DOMParser().parseFromString(data,"text/html");
+            doc.querySelectorAll("[src],[href]").forEach(el=>{
+              const attr = el.hasAttribute("src")?"src":"href";
+              const val = el.getAttribute(attr);
+              if(!val) return;
+              queue.push(abs(url,val));
+            });
+          }
+          if(type.includes("javascript")){
+            const imports = data.match(/import\(["'](.+?)["']\)/g)||[];
+            imports.forEach(i=>{
+              const p = i.match(/["'](.+?)["']/)[1];
+              queue.push(abs(url,p));
+            });
+            const chunks = data.match(/["'](.+?\\.js)["']/g)||[];
+            chunks.forEach(c=>{
+              const p = c.slice(1,-1);
+              if(p.endsWith(".js")) queue.push(abs(url,p));
+            });
+          }
+          if(type.includes("css")){
+            const urls = data.match(/url\((.*?)\)/g)||[];
+            urls.forEach(u=>{
+              const asset = u.slice(4,-1).replace(/['"]/g,"");
+              queue.push(abs(url,asset));
+            });
+          }
+        }catch(e){ console.warn("fail",url);}
+      }
+
+      while(queue.length) await grab(queue.shift());
+
+      const serialized = [...FS].map(([k,v])=>[
+        k,
+        {type:v.type, data: v.data instanceof ArrayBuffer ? Array.from(new Uint8Array(v.data)) : v.data}
+      ]);
+
+      const runtime = `
+        const FS=new Map();
+        const raw=${JSON.stringify(serialized)};
+        for(const [url,obj] of raw){
+          if(Array.isArray(obj.data)){
+            const buf=new Uint8Array(obj.data).buffer;
+            FS.set(url,new Blob([buf],{type:obj.type}));
+          }else{
+            FS.set(url,new Blob([obj.data],{type:obj.type}));
+          }
+        }
+        const realFetch=window.fetch;
+        window.fetch=async function(url,opts){
+          const abs=new URL(url,location.href).href;
+          if(FS.has(abs)) return new Response(FS.get(abs));
+          return realFetch(url,opts);
+        };
+        const XHR=XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open=function(method,url){
+          this._url=new URL(url,location.href).href;
+          return XHR.apply(this,arguments);
+        };
+        const send=XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.send=function(){
+          if(FS.has(this._url)){
+            const reader=new FileReader();
+            reader.onload=()=>{
+              this.readyState=4;
+              this.status=200;
+              this.responseText=reader.result;
+              this.onload&&this.onload();
+            };
+            reader.readAsText(FS.get(this._url));
+            return;
+          }
+          return send.apply(this,arguments);
+        };
+        console.log("God runtime ready",FS);
+      `;
+
+      const main = FS.get(entry).data;
+      const blob = new Blob(["<script>"+runtime+"<\\/script>"+main],{type:"text/html"});
+      const url = URL.createObjectURL(blob);
+      window.open(url);
+    }
+
+    // -------------------------
+    // Actually run it
+    godClone("https://coolors.co");
+  </script>
+</body>
+</html>
