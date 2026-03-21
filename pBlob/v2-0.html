@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Offline Site Packer</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    input { width: 100%; padding: 8px; font-size: 16px; margin: 10px 0; box-sizing: border-box; }
+    button { padding: 10px 24px; font-size: 16px; cursor: pointer; }
+    #status { margin-top: 16px; font-family: monospace; font-size: 13px; white-space: pre-wrap; }
+    .log-default { color: #333; }
+    .log-cyan    { color: #0099bb; }
+    .log-green   { color: #00aa44; font-weight: bold; }
+    .log-gray    { color: #999; }
+    .log-error   { color: #cc2200; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Offline Site Packer</h1>
+  <input type="text" id="urlInput" placeholder="https://example.com" value="https://example.com" />
+  <button onclick="start()">Pack Site</button>
+  <div id="status"></div>
+
+  <script>
+    const proxied = (url) => `https://solitary-base-2f5a.sam-poodleschool-founder.workers.dev/?url=${encodeURIComponent(url)}`;
+
+    let statusLine = null;
+
+    function uiLog(msg, style) {
+      const status = document.getElementById("status");
+      const line = document.createElement("div");
+      line.textContent = msg;
+      line.className = "log-" + (style || "default");
+      status.appendChild(line);
+    }
+
+    // Updates a single rolling line instead of appending a new one
+    function uiUpdate(msg) {
+      if (!statusLine) {
+        statusLine = document.createElement("div");
+        statusLine.className = "log-gray";
+        document.getElementById("status").appendChild(statusLine);
+      }
+      statusLine.textContent = msg;
+    }
+
+    function start() {
+      document.getElementById("status").innerHTML = "";
+      statusLine = null;
+      const url = document.getElementById("urlInput").value.trim();
+      if (!url) { alert("Please enter a URL"); return; }
+      godClone(url);
+    }
+
+    async function godClone(entry) {
+      const FS = new Map();
+      const queue = [entry];
+      const visited = new Set();
+      const abs = (base, p) => new URL(p, base).href;
+
+      uiLog(`Starting clone of: ${entry}`, "cyan");
+
+      async function grab(url) {
+        if (visited.has(url)) return;
+        visited.add(url);
+
+        uiUpdate(`Fetching (${visited.size} visited, ${FS.size} stored, ${queue.length} queued)...`);
+
+        try {
+          const res = await fetch(proxied(url));
+          const type = res.headers.get("content-type") || "";
+          let data;
+
+          if (type.includes("text") || type.includes("javascript") || type.includes("json")) {
+            data = await res.text();
+          } else {
+            const blob = await res.blob();
+            data = await blob.arrayBuffer();
+          }
+
+          FS.set(url, { type, data });
+
+          if (type.includes("html")) {
+            const doc = new DOMParser().parseFromString(data, "text/html");
+            doc.querySelectorAll("[src],[href]").forEach(el => {
+              const attr = el.hasAttribute("src") ? "src" : "href";
+              const val = el.getAttribute(attr);
+              if (!val) return;
+              queue.push(abs(url, val));
+            });
+          }
+
+          if (type.includes("javascript")) {
+            const imports = data.match(/import\(["'](.+?)["']\)/g) || [];
+            imports.forEach(i => {
+              const p = i.match(/["'](.+?)["']/)[1];
+              queue.push(abs(url, p));
+            });
+            const chunks = data.match(/["'](.+?\.js)["']/g) || [];
+            chunks.forEach(c => {
+              const p = c.slice(1, -1);
+              if (p.endsWith(".js")) queue.push(abs(url, p));
+            });
+          }
+
+          if (type.includes("css")) {
+            const urls = data.match(/url\((.*?)\)/g) || [];
+            urls.forEach(u => {
+              const asset = u.slice(4, -1).replace(/['"]/g, "");
+              queue.push(abs(url, asset));
+            });
+          }
+
+        } catch (e) {
+          uiLog(`[error] ${url} — ${e.message}`, "error");
+        }
+      }
+
+      while (queue.length) {
+        await grab(queue.shift());
+      }
+
+      uiLog(`Crawl complete — ${FS.size} resources fetched.`, "green");
+
+      uiLog(`Serializing...`, "gray");
+      const serialized = [...FS].map(([k, v]) => [
+        k,
+        {
+          type: v.type,
+          data: v.data instanceof ArrayBuffer ? Array.from(new Uint8Array(v.data)) : v.data
+        }
+      ]);
+
+      const runtime = `
+        const FS=new Map();
+        const raw=${JSON.stringify(serialized)};
+        for(const [url,obj] of raw){
+          if(Array.isArray(obj.data)){
+            const buf=new Uint8Array(obj.data).buffer;
+            FS.set(url,new Blob([buf],{type:obj.type}));
+          }else{
+            FS.set(url,new Blob([obj.data],{type:obj.type}));
+          }
+        }
+        const realFetch=window.fetch;
+        window.fetch=async function(url,opts){
+          const abs=new URL(url,location.href).href;
+          if(FS.has(abs)) return new Response(FS.get(abs));
+          return realFetch(url,opts);
+        };
+        const XHR=XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open=function(method,url){
+          this._url=new URL(url,location.href).href;
+          return XHR.apply(this,arguments);
+        };
+        const send=XMLHttpRequest.prototype.send;
+        XMLHttpRequest.prototype.send=function(){
+          if(FS.has(this._url)){
+            const reader=new FileReader();
+            reader.onload=()=>{
+              this.readyState=4;
+              this.status=200;
+              this.responseText=reader.result;
+              this.onload&&this.onload();
+            };
+            reader.readAsText(FS.get(this._url));
+            return;
+          }
+          return send.apply(this,arguments);
+        };
+        console.log("[God runtime ready]", FS.size, "entries");
+      `;
+
+      const mainEntry = FS.get(entry);
+      if (!mainEntry) {
+        uiLog(`Failed — entry URL was never fetched: ${entry}`, "error");
+        uiLog(`FS contents: ${[...FS.keys()].join(", ") || "(empty)"}`, "error");
+        return;
+      }
+
+      const main = mainEntry.data;
+      const blob = new Blob(["<script>" + runtime + "<\/script>" + main], { type: "text/html" });
+      const blobUrl = URL.createObjectURL(blob);
+
+      uiLog(`Done! Click below to open.`, "green");
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.target = "_blank";
+      link.textContent = "→ Open packed page";
+      link.style.cssText = "display:block; margin-top:10px; font-size:15px; color:#0066cc;";
+      document.getElementById("status").appendChild(link);
+    }
+  </script>
+</body>
+</html>
