@@ -6,7 +6,7 @@
 <body>
   <h1>God-Tier Offline Site Packer</h1>
   <script>
-    const proxied = (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    const proxied = (url) => `https://crossorigin.me/${encodeURIComponent(url)}`;
 
     async function godClone(entry) {
       const FS = new Map();
